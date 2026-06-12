@@ -182,10 +182,48 @@ echo "Hello, SRE world!"</code></pre>
   </div>
 
   <!-- DIAGRAM PLACEHOLDER -->
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: Side-by-side comparison of GUI vs Terminal showing the same "list files" operation — clicking in Finder vs typing <code>ls</code> in a terminal]</p>
-    <p class="text-xs text-slate-400 mt-1">Replace with actual diagram</p>
+  <!-- DIAGRAM 1: GUI vs Terminal -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">Same action — two interfaces</p>
+    <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="GUI vs Terminal comparison">
+      <!-- ── LEFT: GUI panel ── -->
+      <rect x="2" y="2" width="295" height="200" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+      <rect x="2" y="2" width="295" height="34" rx="10" fill="#e2e8f0"/>
+      <rect x="2" y="24" width="295" height="12" fill="#e2e8f0"/>
+      <circle cx="18" cy="19" r="5" fill="#f87171"/><circle cx="34" cy="19" r="5" fill="#fbbf24"/><circle cx="50" cy="19" r="5" fill="#34d399"/>
+      <text x="148" y="23" font-size="11" font-weight="600" fill="#64748b" text-anchor="middle">📁  File Manager</text>
+      <!-- rows -->
+      <rect x="12" y="44" width="275" height="24" rx="5" fill="#eff6ff"/>
+      <text x="30" y="60" font-size="12">📁</text><text x="50" y="61" font-size="11" font-weight="600" fill="#1e40af">documents</text>
+      <rect x="12" y="72" width="275" height="24" rx="5" fill="white"/>
+      <text x="30" y="88" font-size="12">📁</text><text x="50" y="89" font-size="11" fill="#1e293b">downloads</text>
+      <rect x="12" y="100" width="275" height="24" rx="5" fill="white"/>
+      <text x="30" y="116" font-size="12">📄</text><text x="50" y="117" font-size="11" fill="#1e293b">config.yaml</text><text x="258" y="117" font-size="10" fill="#94a3b8">2.4 KB</text>
+      <rect x="12" y="128" width="275" height="24" rx="5" fill="white"/>
+      <text x="30" y="144" font-size="12">📄</text><text x="50" y="145" font-size="11" fill="#1e293b">deploy.sh</text><text x="260" y="145" font-size="10" fill="#94a3b8">1.1 KB</text>
+      <rect x="12" y="156" width="275" height="24" rx="5" fill="white"/>
+      <text x="30" y="172" font-size="12">📄</text><text x="50" y="173" font-size="11" fill="#1e293b">README.md</text><text x="255" y="173" font-size="10" fill="#94a3b8">3.8 KB</text>
+      <text x="148" y="198" font-size="10" fill="#94a3b8" text-anchor="middle">Point · Click · Drag</text>
+      <!-- ── VS badge ── -->
+      <circle cx="330" cy="105" r="26" fill="#4f46e5"/>
+      <text x="330" y="110" font-size="13" font-weight="700" fill="white" text-anchor="middle">VS</text>
+      <!-- ── RIGHT: Terminal panel ── -->
+      <rect x="363" y="2" width="295" height="200" rx="10" fill="#0f172a"/>
+      <rect x="363" y="2" width="295" height="34" rx="10" fill="#1e293b"/>
+      <rect x="363" y="24" width="295" height="12" fill="#1e293b"/>
+      <circle cx="379" cy="19" r="5" fill="#f87171"/><circle cx="395" cy="19" r="5" fill="#fbbf24"/><circle cx="411" cy="19" r="5" fill="#34d399"/>
+      <text x="510" y="23" font-size="11" font-weight="600" fill="#94a3b8" text-anchor="middle">Terminal — bash</text>
+      <text x="376" y="58" font-size="11" font-family="monospace" fill="#94a3b8">$</text>
+      <text x="388" y="58" font-size="11" font-family="monospace" fill="#e2e8f0">ls -la</text>
+      <text x="376" y="75" font-size="10" font-family="monospace" fill="#64748b">total 32</text>
+      <text x="376" y="91" font-size="10" font-family="monospace" fill="#e2e8f0">drwxr-xr-x  <tspan fill="#60a5fa">documents</tspan></text>
+      <text x="376" y="107" font-size="10" font-family="monospace" fill="#e2e8f0">drwxr-xr-x  <tspan fill="#60a5fa">downloads</tspan></text>
+      <text x="376" y="123" font-size="10" font-family="monospace" fill="#e2e8f0">-rw-r--r--  <tspan fill="#86efac">config.yaml</tspan></text>
+      <text x="376" y="139" font-size="10" font-family="monospace" fill="#e2e8f0">-rwxr-xr-x  <tspan fill="#fdba74">deploy.sh</tspan></text>
+      <text x="376" y="155" font-size="10" font-family="monospace" fill="#e2e8f0">-rw-r--r--  <tspan fill="#86efac">README.md</tspan></text>
+      <text x="376" y="175" font-size="11" font-family="monospace" fill="#94a3b8">$ <tspan fill="#a78bfa">▌</tspan></text>
+      <text x="510" y="198" font-size="10" fill="#475569" text-anchor="middle">Type · Read · Automate</text>
+    </svg>
   </div>
 
   <!-- QUIZ: Q1-Q10 -->
@@ -441,9 +479,52 @@ echo "Hello, SRE world!"</code></pre>
   </div>
 
   <!-- DIAGRAM PLACEHOLDER -->
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: SRE Responsibility Wheel showing Reliability, Scalability, Automation, Monitoring, Incident Response, and Capacity Planning as equal segments]</p>
+  <!-- DIAGRAM 2: SRE Responsibility Wheel -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">The Six Pillars of SRE</p>
+    <svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="SRE six pillars diagram">
+      <!-- ── Center circle ── -->
+      <circle cx="310" cy="180" r="62" fill="#4f46e5" stroke="#818cf8" stroke-width="3"/>
+      <text x="310" y="174" font-size="16" font-weight="800" fill="white" text-anchor="middle">SRE</text>
+      <text x="310" y="194" font-size="10" fill="#c7d2fe" text-anchor="middle">Core Discipline</text>
+      <!-- spokes -->
+      <line x1="310" y1="118" x2="310" y2="82" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="364" y1="150" x2="396" y2="130" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="364" y1="210" x2="396" y2="230" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="310" y1="242" x2="310" y2="278" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="256" y1="210" x2="224" y2="230" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="256" y1="150" x2="224" y2="130" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <!-- ── TOP: Reliability ── -->
+      <rect x="232" y="10" width="156" height="68" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="310" y="36" font-size="18" text-anchor="middle">🎯</text>
+      <text x="310" y="55" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">Reliability</text>
+      <text x="310" y="70" font-size="9.5" fill="#6366f1" text-anchor="middle">SLOs &amp; Error Budgets</text>
+      <!-- ── TOP-RIGHT: Automation ── -->
+      <rect x="420" y="85" width="190" height="68" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+      <text x="515" y="111" font-size="18" text-anchor="middle">⚡</text>
+      <text x="515" y="130" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Automation</text>
+      <text x="515" y="145" font-size="9.5" fill="#059669" text-anchor="middle">Reduce Toil</text>
+      <!-- ── BOTTOM-RIGHT: Monitoring ── -->
+      <rect x="420" y="205" width="190" height="68" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="515" y="231" font-size="18" text-anchor="middle">📊</text>
+      <text x="515" y="250" font-size="12" font-weight="700" fill="#78350f" text-anchor="middle">Monitoring</text>
+      <text x="515" y="265" font-size="9.5" fill="#b45309" text-anchor="middle">Observe &amp; Alert</text>
+      <!-- ── BOTTOM: Incident Response ── -->
+      <rect x="232" y="280" width="156" height="68" rx="12" fill="#ffe4e6" stroke="#f43f5e" stroke-width="1.5"/>
+      <text x="310" y="306" font-size="18" text-anchor="middle">🚨</text>
+      <text x="310" y="325" font-size="12" font-weight="700" fill="#9f1239" text-anchor="middle">Incident Response</text>
+      <text x="310" y="340" font-size="9.5" fill="#e11d48" text-anchor="middle">On-call &amp; Postmortems</text>
+      <!-- ── BOTTOM-LEFT: Capacity Planning ── -->
+      <rect x="10" y="205" width="190" height="68" rx="12" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="105" y="231" font-size="18" text-anchor="middle">📈</text>
+      <text x="105" y="250" font-size="12" font-weight="700" fill="#5b21b6" text-anchor="middle">Capacity Planning</text>
+      <text x="105" y="265" font-size="9.5" fill="#7c3aed" text-anchor="middle">Scale Ahead of Demand</text>
+      <!-- ── TOP-LEFT: Scalability ── -->
+      <rect x="10" y="85" width="190" height="68" rx="12" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.5"/>
+      <text x="105" y="111" font-size="18" text-anchor="middle">🔧</text>
+      <text x="105" y="130" font-size="12" font-weight="700" fill="#075985" text-anchor="middle">Scalability</text>
+      <text x="105" y="145" font-size="9.5" fill="#0284c7" text-anchor="middle">Design for Growth</text>
+    </svg>
   </div>
 
   <div class="bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl p-4 my-6">
@@ -629,9 +710,88 @@ mv old_name new_name     <span class="text-zinc-400"># move / rename</span>
 rm -rf /tmp/old_data/    <span class="text-zinc-400"># CAREFUL: recursive force delete</span></code></pre>
 
   <!-- DIAGRAM PLACEHOLDER -->
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: Linux Filesystem Hierarchy Tree — root / branching into /home, /etc, /var, /usr, /bin, /tmp, /proc, /dev with brief purpose labels]</p>
+  <!-- DIAGRAM 3: Linux Filesystem Hierarchy -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Linux Filesystem Hierarchy Standard (FHS)</p>
+    <svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Linux filesystem hierarchy tree">
+      <!-- ── Root node ── -->
+      <rect x="310" y="8" width="120" height="44" rx="10" fill="#4f46e5" stroke="#6366f1" stroke-width="2"/>
+      <text x="370" y="27" font-size="18" font-weight="800" fill="white" text-anchor="middle">/</text>
+      <text x="370" y="44" font-size="9" fill="#c7d2fe" text-anchor="middle">root of all</text>
+      <!-- trunk line -->
+      <line x1="370" y1="52" x2="370" y2="70" stroke="#6366f1" stroke-width="2"/>
+      <!-- horizontal bar -->
+      <line x1="50" y1="70" x2="690" y2="70" stroke="#cbd5e1" stroke-width="1.5"/>
+      <!-- ── 8 child nodes ── each with a vertical drop and label -->
+      <!-- /home -->
+      <line x1="50" y1="70" x2="50" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="6" y="90" width="88" height="52" rx="8" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.5"/>
+      <text x="50" y="110" font-size="12" font-weight="700" fill="#075985" text-anchor="middle">/home</text>
+      <text x="50" y="126" font-size="8.5" fill="#0284c7" text-anchor="middle">User dirs</text>
+      <text x="50" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">/home/alice</text>
+      <!-- /etc -->
+      <line x1="145" y1="70" x2="145" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="101" y="90" width="88" height="52" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+      <text x="145" y="110" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">/etc</text>
+      <text x="145" y="126" font-size="8.5" fill="#059669" text-anchor="middle">Config files</text>
+      <text x="145" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">nginx, ssh…</text>
+      <!-- /var -->
+      <line x1="240" y1="70" x2="240" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="196" y="90" width="88" height="52" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="240" y="110" font-size="12" font-weight="700" fill="#78350f" text-anchor="middle">/var</text>
+      <text x="240" y="126" font-size="8.5" fill="#b45309" text-anchor="middle">Variable data</text>
+      <text x="240" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">logs, caches</text>
+      <!-- /usr -->
+      <line x1="335" y1="70" x2="335" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="291" y="90" width="88" height="52" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="335" y="110" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">/usr</text>
+      <text x="335" y="126" font-size="8.5" fill="#6366f1" text-anchor="middle">User programs</text>
+      <text x="335" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">bin, lib, share</text>
+      <!-- /bin -->
+      <line x1="430" y1="70" x2="430" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="386" y="90" width="88" height="52" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
+      <text x="430" y="110" font-size="12" font-weight="700" fill="#831843" text-anchor="middle">/bin</text>
+      <text x="430" y="126" font-size="8.5" fill="#db2777" text-anchor="middle">Core binaries</text>
+      <text x="430" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">ls, cp, grep</text>
+      <!-- /tmp -->
+      <line x1="525" y1="70" x2="525" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="481" y="90" width="88" height="52" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="525" y="110" font-size="12" font-weight="700" fill="#475569" text-anchor="middle">/tmp</text>
+      <text x="525" y="126" font-size="8.5" fill="#64748b" text-anchor="middle">Temp files</text>
+      <text x="525" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">cleared @ reboot</text>
+      <!-- /proc -->
+      <line x1="620" y1="70" x2="620" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="576" y="90" width="88" height="52" rx="8" fill="#ffe4e6" stroke="#f43f5e" stroke-width="1.5"/>
+      <text x="620" y="110" font-size="12" font-weight="700" fill="#9f1239" text-anchor="middle">/proc</text>
+      <text x="620" y="126" font-size="8.5" fill="#e11d48" text-anchor="middle">Virtual: kernel</text>
+      <text x="620" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">live in RAM only</text>
+      <!-- /dev -->
+      <line x1="690" y1="70" x2="690" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <rect x="651" y="90" width="83" height="52" rx="8" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="692" y="110" font-size="12" font-weight="700" fill="#5b21b6" text-anchor="middle">/dev</text>
+      <text x="692" y="126" font-size="8.5" fill="#7c3aed" text-anchor="middle">Devices</text>
+      <text x="692" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">disk, tty, null</text>
+      <!-- ── /var sub-tree ── -->
+      <line x1="240" y1="142" x2="240" y2="165" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <line x1="205" y1="165" x2="275" y2="165" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="205" y1="165" x2="205" y2="180" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="275" y1="165" x2="275" y2="180" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="168" y="180" width="74" height="28" rx="6" fill="#fef9c3" stroke="#fbbf24" stroke-width="1"/>
+      <text x="205" y="198" font-size="9" font-weight="600" fill="#92400e" text-anchor="middle">/var/log</text>
+      <rect x="240" y="180" width="74" height="28" rx="6" fill="#fef9c3" stroke="#fbbf24" stroke-width="1"/>
+      <text x="277" y="198" font-size="9" font-weight="600" fill="#92400e" text-anchor="middle">/var/lib</text>
+      <!-- ── /etc sub-tree ── -->
+      <line x1="145" y1="142" x2="145" y2="165" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <line x1="110" y1="165" x2="180" y2="165" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="110" y1="165" x2="110" y2="180" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="180" y1="165" x2="180" y2="180" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="72" y="180" width="74" height="28" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1"/>
+      <text x="109" y="198" font-size="9" font-weight="600" fill="#065f46" text-anchor="middle">/etc/nginx</text>
+      <rect x="148" y="180" width="64" height="28" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1"/>
+      <text x="180" y="198" font-size="9" font-weight="600" fill="#065f46" text-anchor="middle">/etc/ssh</text>
+      <!-- legend note -->
+      <text x="370" y="250" font-size="9.5" fill="#94a3b8" text-anchor="middle">Dashed lines show common subdirectories — every path traces back to  /</text>
+    </svg>
   </div>
 
   <!-- QUIZ Q21–Q30 -->
@@ -801,9 +961,67 @@ sudo systemctl restart nginx
 sudo -i   <span class="text-zinc-400"># open a root shell (use sparingly)</span></code></pre>
 
   <!-- DIAGRAM PLACEHOLDER -->
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: Permission string breakdown — annotated "-rwxr-xr--" with color-coded boxes showing file type, owner, group, and others sections, plus octal equivalents]</p>
+  <!-- DIAGRAM 4: Permission String Breakdown -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">How to Read a Linux Permission String</p>
+    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Linux permission string breakdown">
+      <!-- ── Permission string characters ── -->
+      <!-- Each char: 52px wide, monospace, large -->
+      <!-- Positions: 60,130,178,226,274,322,370,418,466,514 -->
+      <!-- File type: position 1 = index 60 -->
+      <!-- CHAR BOXES -->
+      <rect x="30"  y="40" width="52" height="52" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+      <rect x="90"  y="40" width="52" height="52" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <rect x="148" y="40" width="52" height="52" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <rect x="206" y="40" width="52" height="52" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <rect x="270" y="40" width="52" height="52" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+      <rect x="328" y="40" width="52" height="52" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+      <rect x="386" y="40" width="52" height="52" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+      <rect x="450" y="40" width="52" height="52" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <rect x="508" y="40" width="52" height="52" rx="8" fill="#fef9c3" stroke="#fde047" stroke-width="2"/>
+      <rect x="566" y="40" width="52" height="52" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+      <!-- CHARACTERS -->
+      <text x="56"  y="77" font-size="26" font-weight="700" font-family="monospace" fill="#475569" text-anchor="middle">-</text>
+      <text x="116" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#1d4ed8" text-anchor="middle">r</text>
+      <text x="174" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#1d4ed8" text-anchor="middle">w</text>
+      <text x="232" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#1d4ed8" text-anchor="middle">x</text>
+      <text x="296" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#059669" text-anchor="middle">r</text>
+      <text x="354" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#6b7280" text-anchor="middle">-</text>
+      <text x="412" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#059669" text-anchor="middle">x</text>
+      <text x="476" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#b45309" text-anchor="middle">r</text>
+      <text x="534" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#6b7280" text-anchor="middle">-</text>
+      <text x="592" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#6b7280" text-anchor="middle">-</text>
+      <!-- ── Bracket annotations ── -->
+      <!-- File type bracket -->
+      <path d="M30 100 L30 115 L82 115 L82 100" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="56" y="130" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle">File Type</text>
+      <text x="56" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">-=file  d=dir</text>
+      <!-- Owner bracket -->
+      <path d="M90 100 L90 115 L258 115 L258 100" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="174" y="130" font-size="9" font-weight="700" fill="#1d4ed8" text-anchor="middle">Owner (rwx)</text>
+      <text x="174" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">Read · Write · Execute</text>
+      <!-- Octal: Owner -->
+      <rect x="136" y="155" width="76" height="22" rx="6" fill="#dbeafe"/>
+      <text x="174" y="170" font-size="10" font-weight="700" fill="#1e40af" text-anchor="middle">4+2+1 = 7</text>
+      <!-- Group bracket -->
+      <path d="M270 100 L270 115 L438 115 L438 100" fill="none" stroke="#10b981" stroke-width="1.5"/>
+      <text x="354" y="130" font-size="9" font-weight="700" fill="#065f46" text-anchor="middle">Group (r-x)</text>
+      <text x="354" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">Read · No Write · Execute</text>
+      <!-- Octal: Group -->
+      <rect x="316" y="155" width="76" height="22" rx="6" fill="#d1fae5"/>
+      <text x="354" y="170" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">4+0+1 = 5</text>
+      <!-- Others bracket -->
+      <path d="M450 100 L450 115 L618 115 L618 100" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="534" y="130" font-size="9" font-weight="700" fill="#92400e" text-anchor="middle">Others (r--)</text>
+      <text x="534" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">Read · No Write · No Exec</text>
+      <!-- Octal: Others -->
+      <rect x="496" y="155" width="76" height="22" rx="6" fill="#fef3c7"/>
+      <text x="534" y="170" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">4+0+0 = 4</text>
+      <!-- ── Summary row ── -->
+      <rect x="60" y="195" width="560" height="42" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+      <text x="340" y="212" font-size="10" fill="#64748b" text-anchor="middle" font-weight="600">chmod  <tspan fill="#1d4ed8">7</tspan><tspan fill="#059669">5</tspan><tspan fill="#b45309">4</tspan>  deploy.sh     →   Owner: rwx    Group: r-x    Others: r--</text>
+      <text x="340" y="228" font-size="9" fill="#94a3b8" text-anchor="middle">r = 4 (read)   w = 2 (write)   x = 1 (execute)   - = 0 (none)   Sum each trio to get the octal digit</text>
+    </svg>
   </div>
 
   <!-- QUIZ Q31–Q40 -->
@@ -982,9 +1200,67 @@ crontab -e          <span class="text-zinc-400"># edit your cron jobs</span>
 <span class="text-zinc-400"># 0 2 * * *  /opt/scripts/backup.sh  # run at 2am daily</span></code></pre>
 
   <!-- DIAGRAM PLACEHOLDER -->
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: Process lifecycle state machine — arrows between Created, Running, Sleeping, Stopped, Zombie, and Terminated states with triggering signals labeled]</p>
+  <!-- DIAGRAM 5: Process Lifecycle State Machine -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Linux Process Lifecycle</p>
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Process lifecycle states">
+      <defs>
+        <marker id="arrowB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
+        <marker id="arrowR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f43f5e"/></marker>
+        <marker id="arrowA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/></marker>
+      </defs>
+      <!-- ── State boxes ── -->
+      <!-- CREATED (top-left) -->
+      <rect x="20" y="20" width="110" height="52" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+      <text x="75" y="42" font-size="11" font-weight="700" fill="#3730a3" text-anchor="middle">CREATED</text>
+      <text x="75" y="57" font-size="8.5" fill="#6366f1" text-anchor="middle">fork() / exec()</text>
+      <!-- RUNNING (center) -->
+      <rect x="285" y="110" width="130" height="56" rx="10" fill="#4f46e5" stroke="#6366f1" stroke-width="2"/>
+      <text x="350" y="133" font-size="12" font-weight="800" fill="white" text-anchor="middle">RUNNING</text>
+      <text x="350" y="151" font-size="8.5" fill="#c7d2fe" text-anchor="middle">On CPU — doing work</text>
+      <!-- SLEEPING (top-right) -->
+      <rect x="560" y="20" width="120" height="52" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+      <text x="620" y="42" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">SLEEPING</text>
+      <text x="620" y="57" font-size="8.5" fill="#059669" text-anchor="middle">Waiting for I/O or event</text>
+      <!-- STOPPED (bottom-left) -->
+      <rect x="20" y="210" width="110" height="52" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="75" y="232" font-size="11" font-weight="700" fill="#78350f" text-anchor="middle">STOPPED</text>
+      <text x="75" y="247" font-size="8.5" fill="#b45309" text-anchor="middle">SIGSTOP / Ctrl+Z</text>
+      <!-- ZOMBIE (bottom-right) -->
+      <rect x="560" y="210" width="120" height="52" rx="10" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
+      <text x="620" y="232" font-size="11" font-weight="700" fill="#5b21b6" text-anchor="middle">ZOMBIE</text>
+      <text x="620" y="247" font-size="8.5" fill="#7c3aed" text-anchor="middle">Done, parent not waited</text>
+      <!-- TERMINATED (bottom-center) -->
+      <rect x="275" y="210" width="150" height="52" rx="10" fill="#ffe4e6" stroke="#f43f5e" stroke-width="2"/>
+      <text x="350" y="232" font-size="11" font-weight="700" fill="#9f1239" text-anchor="middle">TERMINATED</text>
+      <text x="350" y="247" font-size="8.5" fill="#e11d48" text-anchor="middle">SIGTERM / SIGKILL / exit()</text>
+      <!-- ── Arrows ── -->
+      <!-- CREATED → RUNNING -->
+      <path d="M130 46 Q207 46 285 138" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrowB)"/>
+      <text x="195" y="72" font-size="8.5" fill="#6366f1" transform="rotate(-28,195,72)">scheduled</text>
+      <!-- RUNNING → SLEEPING -->
+      <path d="M415 125 Q490 80 560 46" fill="none" stroke="#10b981" stroke-width="1.8" marker-end="url(#arrowG)"/>
+      <text x="500" y="73" font-size="8.5" fill="#059669" transform="rotate(-28,500,73)">I/O wait</text>
+      <!-- SLEEPING → RUNNING -->
+      <path d="M560 56 Q490 100 415 128" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowB)"/>
+      <text x="470" y="110" font-size="8" fill="#6366f1">woken up</text>
+      <!-- RUNNING → STOPPED -->
+      <path d="M285 140 Q160 140 130 210" fill="none" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arrowA)"/>
+      <text x="155" y="165" font-size="8.5" fill="#b45309" transform="rotate(50,155,165)">SIGSTOP</text>
+      <!-- STOPPED → RUNNING -->
+      <path d="M130 210 Q215 175 285 148" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowB)"/>
+      <text x="190" y="185" font-size="8" fill="#6366f1">SIGCONT</text>
+      <!-- RUNNING → TERMINATED -->
+      <path d="M350 166 L350 210" fill="none" stroke="#f43f5e" stroke-width="1.8" marker-end="url(#arrowR)"/>
+      <text x="355" y="196" font-size="8" fill="#e11d48">exit / kill</text>
+      <!-- SLEEPING → ZOMBIE (edge case) -->
+      <path d="M620 72 L620 210" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowA)"/>
+      <text x="628" y="155" font-size="8" fill="#7c3aed" transform="rotate(90,628,155)">parent exits</text>
+      <!-- ZOMBIE → TERMINATED -->
+      <path d="M560 236 L425 236" fill="none" stroke="#f43f5e" stroke-width="1.5" marker-end="url(#arrowR)"/>
+      <text x="490" y="229" font-size="8" fill="#e11d48">wait()</text>
+    </svg>
   </div>
 
   <!-- QUIZ Q41–Q50 -->
@@ -1163,9 +1439,71 @@ sudo ufw status verbose
 sudo ufw allow 443/tcp
 sudo ufw deny 23/tcp</code></pre>
 
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: Network request lifecycle — client → DNS resolver → authoritative DNS → server IP → TCP handshake → HTTP request → response, with port numbers labeled at each stage]</p>
+  <!-- DIAGRAM 6: Network Request Lifecycle -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">What Happens When You curl https://api.example.com</p>
+    <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Network request lifecycle">
+      <defs>
+        <marker id="arrN" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrNR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
+      </defs>
+      <!-- STEP 1: Client -->
+      <rect x="10" y="80" width="110" height="70" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+      <text x="65" y="108" font-size="20" text-anchor="middle">💻</text>
+      <text x="65" y="128" font-size="11" font-weight="700" fill="#3730a3" text-anchor="middle">Your Machine</text>
+      <text x="65" y="142" font-size="8.5" fill="#6366f1" text-anchor="middle">curl / browser</text>
+      <!-- arrow 1→2 -->
+      <path d="M120 115 L175 115" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrN)"/>
+      <text x="147" y="108" font-size="8" fill="#64748b" text-anchor="middle">DNS</text>
+      <text x="147" y="128" font-size="8" fill="#94a3b8" text-anchor="middle">port 53</text>
+      <!-- STEP 2: DNS Resolver -->
+      <rect x="175" y="80" width="120" height="70" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="235" y="108" font-size="20" text-anchor="middle">🌐</text>
+      <text x="235" y="128" font-size="11" font-weight="700" fill="#78350f" text-anchor="middle">DNS Resolver</text>
+      <text x="235" y="142" font-size="8.5" fill="#b45309" text-anchor="middle">8.8.8.8 or ISP</text>
+      <!-- answer arrow back -->
+      <path d="M175 125 L120 125" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrNR)"/>
+      <text x="147" y="140" font-size="8" fill="#10b981" text-anchor="middle">IP: 93.184.x.x</text>
+      <!-- arrow 2→3 -->
+      <path d="M295 115 L355 115" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrN)"/>
+      <text x="325" y="108" font-size="8" fill="#64748b" text-anchor="middle">TCP</text>
+      <text x="325" y="128" font-size="8" fill="#94a3b8" text-anchor="middle">port 443</text>
+      <!-- STEP 3: TLS Handshake -->
+      <rect x="355" y="65" width="130" height="100" rx="12" fill="#f0fdf4" stroke="#10b981" stroke-width="2"/>
+      <text x="420" y="95" font-size="20" text-anchor="middle">🔒</text>
+      <text x="420" y="116" font-size="11" font-weight="700" fill="#14532d" text-anchor="middle">TLS Handshake</text>
+      <text x="420" y="131" font-size="8.5" fill="#16a34a" text-anchor="middle">SYN → SYN-ACK → ACK</text>
+      <text x="420" y="145" font-size="8.5" fill="#16a34a" text-anchor="middle">Certificate verify</text>
+      <text x="420" y="158" font-size="8" fill="#94a3b8" text-anchor="middle">~3 round trips</text>
+      <!-- arrow 3→4 -->
+      <path d="M485 115 L545 115" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrN)"/>
+      <text x="515" y="108" font-size="8" fill="#64748b" text-anchor="middle">HTTPS</text>
+      <text x="515" y="128" font-size="8" fill="#94a3b8" text-anchor="middle">GET /status</text>
+      <!-- STEP 4: Server -->
+      <rect x="545" y="80" width="120" height="70" rx="12" fill="#ffe4e6" stroke="#f43f5e" stroke-width="2"/>
+      <text x="605" y="108" font-size="20" text-anchor="middle">🖥️</text>
+      <text x="605" y="128" font-size="11" font-weight="700" fill="#9f1239" text-anchor="middle">Server</text>
+      <text x="605" y="142" font-size="8.5" fill="#e11d48" text-anchor="middle">nginx · port 443</text>
+      <!-- response arrow back -->
+      <path d="M545 125 L485 125" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrNR)"/>
+      <text x="515" y="140" font-size="8" fill="#10b981" text-anchor="middle">200 OK + body</text>
+      <!-- ── Bottom timeline labels ── -->
+      <line x1="10" y1="175" x2="665" y2="175" stroke="#e2e8f0" stroke-width="1.5"/>
+      <circle cx="65"  cy="175" r="4" fill="#6366f1"/>
+      <circle cx="235" cy="175" r="4" fill="#f59e0b"/>
+      <circle cx="420" cy="175" r="4" fill="#10b981"/>
+      <circle cx="605" cy="175" r="4" fill="#f43f5e"/>
+      <text x="65"  y="192" font-size="8.5" fill="#64748b" text-anchor="middle">① Lookup</text>
+      <text x="65"  y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">api.example.com→IP</text>
+      <text x="235" y="192" font-size="8.5" fill="#64748b" text-anchor="middle">② Resolve</text>
+      <text x="235" y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">Cached or recursive</text>
+      <text x="420" y="192" font-size="8.5" fill="#64748b" text-anchor="middle">③ Encrypt</text>
+      <text x="420" y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">TLS 1.3 handshake</text>
+      <text x="605" y="192" font-size="8.5" fill="#64748b" text-anchor="middle">④ Respond</text>
+      <text x="605" y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">App handles request</text>
+      <!-- total time note -->
+      <text x="360" y="222" font-size="8.5" fill="#94a3b8" text-anchor="middle">Typical total round-trip: 20–200 ms depending on geography and caching</text>
+    </svg>
   </div>
 
   <div class="mt-10">
@@ -1341,9 +1679,86 @@ dmesg -T | grep -i oom    <span class="text-zinc-400"># find OOM killer events</
     <p class="text-rose-700 text-sm">Set up alerts when <code>/</code> or <code>/var</code> exceeds 80% full. A full disk stops applications from writing logs, accepting connections, or even running. Many outages trace back to a forgotten log file filling the disk.</p>
   </div>
 
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: SRE monitoring dashboard showing CPU%, memory usage bar, disk usage bar, load average trend chart, and network traffic — with alert thresholds marked in red]</p>
+  <!-- DIAGRAM 7: SRE Monitoring Dashboard -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-900 p-5">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Live System Dashboard — prod-web-01</p>
+    <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="SRE monitoring dashboard">
+      <!-- ── CPU gauge (top-left) ── -->
+      <rect x="10" y="10" width="155" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="87" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">CPU USAGE</text>
+      <!-- semicircle gauge track -->
+      <path d="M37 88 A50 50 0 0 1 137 88" fill="none" stroke="#334155" stroke-width="10" stroke-linecap="round"/>
+      <!-- filled portion: 68% of π = 68% of 180° -->
+      <path d="M37 88 A50 50 0 0 1 115 55" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
+      <text x="87" y="85" font-size="20" font-weight="800" fill="#f59e0b" text-anchor="middle">68%</text>
+      <text x="87" y="103" font-size="8.5" fill="#64748b" text-anchor="middle">4 cores · 2.4 GHz</text>
+      <text x="40" y="103" font-size="8" fill="#64748b">0%</text>
+      <text x="124" y="103" font-size="8" fill="#64748b">100%</text>
+      <!-- alert threshold line label -->
+      <text x="87" y="118" font-size="8" fill="#fbbf24" text-anchor="middle">▲ warn at 80%</text>
+      <!-- ── MEMORY bar (top-center-left) ── -->
+      <rect x="175" y="10" width="155" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="252" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">MEMORY (RAM)</text>
+      <text x="252" y="55" font-size="22" font-weight="800" fill="#60a5fa" text-anchor="middle">5.8 GB</text>
+      <text x="252" y="72" font-size="8.5" fill="#64748b" text-anchor="middle">of 8 GB total</text>
+      <!-- bar track -->
+      <rect x="195" y="82" width="115" height="12" rx="6" fill="#334155"/>
+      <!-- fill 72% -->
+      <rect x="195" y="82" width="83" height="12" rx="6" fill="#60a5fa"/>
+      <!-- threshold mark -->
+      <line x1="287" y1="79" x2="287" y2="98" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="2,1"/>
+      <text x="287" y="110" font-size="7.5" fill="#f43f5e" text-anchor="middle">85% alert</text>
+      <text x="252" y="118" font-size="8.5" fill="#60a5fa" text-anchor="middle">72% used</text>
+      <!-- ── DISK bar (top-center-right) ── -->
+      <rect x="340" y="10" width="155" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="417" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">DISK  /var</text>
+      <text x="417" y="55" font-size="22" font-weight="800" fill="#34d399" text-anchor="middle">41 GB</text>
+      <text x="417" y="72" font-size="8.5" fill="#64748b" text-anchor="middle">of 100 GB</text>
+      <rect x="360" y="82" width="115" height="12" rx="6" fill="#334155"/>
+      <rect x="360" y="82" width="47" height="12" rx="6" fill="#34d399"/>
+      <line x1="452" y1="79" x2="452" y2="98" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="2,1"/>
+      <text x="452" y="110" font-size="7.5" fill="#f43f5e" text-anchor="middle">80% alert</text>
+      <text x="417" y="118" font-size="8.5" fill="#34d399" text-anchor="middle">41% used · OK</text>
+      <!-- ── LOAD AVERAGE card (top-right) ── -->
+      <rect x="505" y="10" width="185" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="597" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">LOAD AVERAGE</text>
+      <text x="545" y="58" font-size="10" fill="#64748b" text-anchor="middle">1 min</text>
+      <text x="597" y="58" font-size="10" fill="#64748b" text-anchor="middle">5 min</text>
+      <text x="649" y="58" font-size="10" fill="#64748b" text-anchor="middle">15 min</text>
+      <text x="545" y="78" font-size="18" font-weight="800" fill="#a78bfa" text-anchor="middle">1.4</text>
+      <text x="597" y="78" font-size="18" font-weight="800" fill="#a78bfa" text-anchor="middle">1.8</text>
+      <text x="649" y="78" font-size="18" font-weight="800" fill="#64748b" text-anchor="middle">2.1</text>
+      <text x="597" y="97" font-size="8.5" fill="#64748b" text-anchor="middle">4 CPUs — threshold: 4.0</text>
+      <rect x="515" y="103" width="164" height="14" rx="4" fill="#0f172a"/>
+      <rect x="515" y="103" width="65" height="14" rx="4" fill="#a78bfa" opacity="0.4"/>
+      <text x="597" y="114" font-size="7.5" fill="#a78bfa" text-anchor="middle">45% of capacity</text>
+      <!-- ── LOAD TREND sparkline (bottom) ── -->
+      <rect x="10" y="140" width="680" height="120" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="350" y="160" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">LOAD AVERAGE TREND  (last 30 minutes)</text>
+      <!-- grid lines -->
+      <line x1="30" y1="172" x2="670" y2="172" stroke="#334155" stroke-width="0.5"/>
+      <line x1="30" y1="190" x2="670" y2="190" stroke="#334155" stroke-width="0.5"/>
+      <line x1="30" y1="208" x2="670" y2="208" stroke="#334155" stroke-width="0.5"/>
+      <text x="25" y="175" font-size="7" fill="#475569" text-anchor="end">4.0</text>
+      <text x="25" y="193" font-size="7" fill="#475569" text-anchor="end">2.0</text>
+      <text x="25" y="211" font-size="7" fill="#475569" text-anchor="end">0</text>
+      <!-- alert threshold -->
+      <line x1="30" y1="172" x2="670" y2="172" stroke="#f43f5e" stroke-width="1" stroke-dasharray="6,3" opacity="0.7"/>
+      <text x="655" y="169" font-size="7" fill="#f43f5e">ALERT</text>
+      <!-- Sparkline path (simulated load data) -->
+      <polyline points="30,207 55,206 80,204 105,202 130,200 155,199 180,197 205,196 230,194 255,200 280,204 305,207 330,205 355,202 380,198 405,196 430,194 455,196 480,199 505,200 530,202 555,200 580,198 605,196 630,193 655,192 670,191" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- area fill under sparkline -->
+      <polygon points="30,207 55,206 80,204 105,202 130,200 155,199 180,197 205,196 230,194 255,200 280,204 305,207 330,205 355,202 380,198 405,196 430,194 455,196 480,199 505,200 530,202 555,200 580,198 605,196 630,193 655,192 670,191 670,208 30,208" fill="#a78bfa" opacity="0.1"/>
+      <!-- time labels -->
+      <text x="30"  y="222" font-size="7" fill="#475569" text-anchor="middle">-30m</text>
+      <text x="190" y="222" font-size="7" fill="#475569" text-anchor="middle">-20m</text>
+      <text x="350" y="222" font-size="7" fill="#475569" text-anchor="middle">-15m</text>
+      <text x="510" y="222" font-size="7" fill="#475569" text-anchor="middle">-10m</text>
+      <text x="670" y="222" font-size="7" fill="#475569" text-anchor="middle">now</text>
+      <!-- uptime badge -->
+      <rect x="565" y="228" width="115" height="22" rx="6" fill="#0f172a" stroke="#334155"/>
+      <text x="622" y="243" font-size="8.5" fill="#34d399" text-anchor="middle">✓ uptime: 47 days</text>
+    </svg>
   </div>
 
   <div class="mt-10">
@@ -1515,9 +1930,64 @@ journalctl -u nginx --since "1 hour ago"
 journalctl -p err -n 50           <span class="text-zinc-400"># last 50 error-level entries</span>
 journalctl --since "2024-01-15 14:00" --until "2024-01-15 15:00"</code></pre>
 
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: Linux log pipeline — app writes to /var/log → logrotate compresses old logs → centralized log aggregation (ELK/Splunk/Loki) → alert rules → PagerDuty notification]</p>
+  <!-- DIAGRAM 8: Log Pipeline -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">From Application Event to On-Call Alert</p>
+    <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Log pipeline flow">
+      <defs>
+        <marker id="arrLog" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+      </defs>
+      <!-- Step 1: Application -->
+      <rect x="8" y="50" width="108" height="80" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="62" y="82" font-size="20" text-anchor="middle">🖥️</text>
+      <text x="62" y="101" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Application</text>
+      <text x="62" y="116" font-size="8" fill="#6366f1" text-anchor="middle">nginx / app / sshd</text>
+      <text x="62" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">emits log lines</text>
+      <!-- arrow -->
+      <path d="M116 90 L148 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="132" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">write()</text>
+      <!-- Step 2: /var/log -->
+      <rect x="148" y="50" width="112" height="80" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="204" y="82" font-size="20" text-anchor="middle">📂</text>
+      <text x="204" y="101" font-size="10" font-weight="700" fill="#78350f" text-anchor="middle">/var/log</text>
+      <text x="204" y="116" font-size="8" fill="#b45309" text-anchor="middle">app.log</text>
+      <text x="204" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">grows over time</text>
+      <!-- arrow -->
+      <path d="M260 90 L292 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="276" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">rotate</text>
+      <!-- Step 3: logrotate -->
+      <rect x="292" y="50" width="112" height="80" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+      <text x="348" y="82" font-size="20" text-anchor="middle">🔄</text>
+      <text x="348" y="101" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">logrotate</text>
+      <text x="348" y="116" font-size="8" fill="#059669" text-anchor="middle">compress &amp; archive</text>
+      <text x="348" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">app.log.1.gz</text>
+      <!-- arrow -->
+      <path d="M404 90 L436 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="420" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">ship</text>
+      <!-- Step 4: Log Aggregator -->
+      <rect x="436" y="50" width="112" height="80" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="492" y="82" font-size="20" text-anchor="middle">📊</text>
+      <text x="492" y="101" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Aggregator</text>
+      <text x="492" y="116" font-size="8" fill="#6366f1" text-anchor="middle">Loki / ELK / Splunk</text>
+      <text x="492" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">index &amp; query</text>
+      <!-- arrow -->
+      <path d="M548 90 L580 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="564" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">match</text>
+      <!-- Step 5: Alert Manager -->
+      <rect x="580" y="50" width="132" height="80" rx="12" fill="#ffe4e6" stroke="#f43f5e" stroke-width="1.5"/>
+      <text x="646" y="82" font-size="20" text-anchor="middle">🚨</text>
+      <text x="646" y="101" font-size="10" font-weight="700" fill="#9f1239" text-anchor="middle">Alert Manager</text>
+      <text x="646" y="116" font-size="8" fill="#e11d48" text-anchor="middle">PagerDuty / OpsGenie</text>
+      <text x="646" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">page on-call SRE 📱</text>
+      <!-- ── bottom command examples ── -->
+      <rect x="8" y="148" width="705" height="34" rx="8" fill="#0f172a"/>
+      <text x="20" y="162" font-size="8.5" font-family="monospace" fill="#94a3b8">$</text>
+      <text x="30" y="162" font-size="8.5" font-family="monospace" fill="#e2e8f0">tail -f /var/log/nginx/access.log</text>
+      <text x="255" y="162" font-size="8.5" font-family="monospace" fill="#64748b">|</text>
+      <text x="263" y="162" font-size="8.5" font-family="monospace" fill="#e2e8f0">grep <tspan fill="#fbbf24">"500"</tspan></text>
+      <text x="20" y="175" font-size="8.5" font-family="monospace" fill="#94a3b8">$</text>
+      <text x="30" y="175" font-size="8.5" font-family="monospace" fill="#e2e8f0">journalctl -u nginx --since <tspan fill="#fbbf24">"10 min ago"</tspan> -p err</text>
+    </svg>
   </div>
 
   <div class="mt-10">
@@ -1703,9 +2173,76 @@ trap "echo 'Interrupted!'; exit 1" INT  <span class="text-zinc-400"># handle Ctr
 ./script.sh &gt;&gt; output.log 2&gt;&amp;1  <span class="text-zinc-400"># append</span>
 ./noisy_cmd.sh 2&gt;/dev/null       <span class="text-zinc-400"># discard stderr</span></code></pre>
 
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: Shell script control flow — boxes showing: shebang → set -euo → variable declarations → function definitions → main logic (if/for/while) → cleanup trap, with arrows showing error exit paths]</p>
+  <!-- DIAGRAM 9: Shell Script Control Flow -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Anatomy of a Production-Safe Bash Script</p>
+    <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Shell script control flow">
+      <defs>
+        <marker id="arrSh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrShR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f43f5e"/></marker>
+      </defs>
+      <!-- ── COLUMN 1: The script blocks (left) ── -->
+      <!-- 1: Shebang -->
+      <rect x="40" y="12" width="230" height="42" rx="9" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+      <text x="60" y="30" font-size="10" font-family="monospace" fill="#94a3b8">#!/usr/bin/env</text>
+      <text x="180" y="30" font-size="10" font-family="monospace" fill="#60a5fa">bash</text>
+      <text x="155" y="46" font-size="8" fill="#64748b" text-anchor="middle">Shebang — tells OS which interpreter to use</text>
+      <!-- arrow down -->
+      <path d="M155 54 L155 70" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <!-- 2: set -euo pipefail -->
+      <rect x="40" y="70" width="230" height="42" rx="9" fill="#1e293b" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="155" y="88" font-size="10" font-family="monospace" fill="#a5b4fc" text-anchor="middle">set -euo pipefail</text>
+      <text x="155" y="104" font-size="8" fill="#64748b" text-anchor="middle">Strict mode — fail fast on any error</text>
+      <!-- arrow down -->
+      <path d="M155 112 L155 128" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <!-- 3: Variables -->
+      <rect x="40" y="128" width="230" height="42" rx="9" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+      <text x="155" y="146" font-size="10" font-family="monospace" fill="#fbbf24" text-anchor="middle">SERVER="prod-01"</text>
+      <text x="155" y="162" font-size="8" fill="#64748b" text-anchor="middle">Constants &amp; configuration at the top</text>
+      <!-- arrow down -->
+      <path d="M155 170 L155 186" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <!-- 4: trap cleanup EXIT -->
+      <rect x="40" y="186" width="230" height="42" rx="9" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="155" y="204" font-size="10" font-family="monospace" fill="#c4b5fd" text-anchor="middle">trap cleanup EXIT</text>
+      <text x="155" y="220" font-size="8" fill="#64748b" text-anchor="middle">Register cleanup — runs on any exit</text>
+      <!-- arrow down -->
+      <path d="M155 228 L155 244" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <!-- 5: Main Logic (diamond-ish) -->
+      <rect x="40" y="244" width="230" height="58" rx="9" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+      <text x="155" y="264" font-size="10" font-family="monospace" fill="#34d399" text-anchor="middle">if / for / while</text>
+      <text x="155" y="280" font-size="8.5" fill="#94a3b8" text-anchor="middle">Main business logic</text>
+      <text x="155" y="293" font-size="8" fill="#64748b" text-anchor="middle">core script work happens here</text>
+      <!-- ── COLUMN 2: explanations (right) ── -->
+      <!-- Shebang note -->
+      <line x1="270" y1="33" x2="330" y2="33" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="14" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="345" y="31" font-size="9" fill="#475569">Always use <tspan font-family="monospace" fill="#4f46e5">#!/usr/bin/env bash</tspan></text>
+      <text x="345" y="44" font-size="8" fill="#94a3b8">Finds bash in $PATH — portable across systems</text>
+      <!-- set note -->
+      <line x1="270" y1="91" x2="330" y2="91" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="72" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="345" y="89" font-size="9" fill="#475569"><tspan font-family="monospace" fill="#4f46e5">-e</tspan> exit on error · <tspan font-family="monospace" fill="#4f46e5">-u</tspan> no unset vars · <tspan font-family="monospace" fill="#4f46e5">-o pipefail</tspan></text>
+      <text x="345" y="102" font-size="8" fill="#94a3b8">The "strict mode" triple — prevents silent failures</text>
+      <!-- variables note -->
+      <line x1="270" y1="149" x2="330" y2="149" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="130" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="345" y="147" font-size="9" fill="#475569">Quote variables: <tspan font-family="monospace" fill="#4f46e5">"$VAR"</tspan> not <tspan font-family="monospace" fill="#f43f5e">$VAR</tspan></text>
+      <text x="345" y="160" font-size="8" fill="#94a3b8">Prevents word-splitting on spaces — a classic bug</text>
+      <!-- trap note -->
+      <line x1="270" y1="207" x2="330" y2="207" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="188" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="345" y="205" font-size="9" fill="#475569"><tspan font-family="monospace" fill="#4f46e5">trap "rm -f /tmp/lock" EXIT</tspan></text>
+      <text x="345" y="218" font-size="8" fill="#94a3b8">Cleanup runs even if the script errors or is killed</text>
+      <!-- main note -->
+      <line x1="270" y1="273" x2="330" y2="273" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="248" width="320" height="56" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="345" y="267" font-size="9" fill="#475569">Check exit codes: <tspan font-family="monospace" fill="#4f46e5">cmd || { echo "failed"; exit 1; }</tspan></text>
+      <text x="345" y="281" font-size="8" fill="#94a3b8">Log progress: <tspan font-family="monospace" fill="#64748b">echo "[$(date)] Starting backup..."</tspan></text>
+      <text x="345" y="295" font-size="8" fill="#94a3b8">Use functions for reusable chunks of logic</text>
+      <!-- error path arrow from set block -->
+      <path d="M40 91 Q20 91 20 273 L40 273" fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrShR)"/>
+      <text x="14" y="185" font-size="8" fill="#f43f5e" transform="rotate(-90,14,185)">error → EXIT trap</text>
+    </svg>
   </div>
 
   <div class="mt-10">
@@ -1890,9 +2427,70 @@ rsync -avz --progress /local/dir/ user@server:/remote/dir/</code></pre>
     <p class="text-rose-700 text-sm">On a compromised server you may see: unexpected user accounts in <code>/etc/passwd</code>, unfamiliar processes in <code>ps aux</code>, new cron jobs in <code>crontab -l</code>, modified system binaries, unusual outbound connections in <code>ss -tulpn</code>, or thousands of failed login attempts in <code>/var/log/auth.log</code>.</p>
   </div>
 
-  <div class="diagram-ph my-8 p-8 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-    <div class="text-5xl mb-3">🖼️</div>
-    <p class="font-semibold text-slate-500 text-sm">[DIAGRAM: SSH key-based authentication flow — client generates key pair → public key uploaded to server's authorized_keys → SSH connection with private key → server verifies match → authenticated session granted]</p>
+  <!-- DIAGRAM 10: SSH Key-Based Authentication -->
+  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+    <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">SSH Key-Based Authentication — How It Works</p>
+    <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="SSH key authentication flow">
+      <defs>
+        <marker id="arrSSH" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrSSHG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
+      </defs>
+      <!-- ── Two columns: CLIENT left, SERVER right ── -->
+      <!-- CLIENT header -->
+      <rect x="10" y="8" width="270" height="36" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+      <text x="145" y="23" font-size="11" font-weight="700" fill="#3730a3" text-anchor="middle">💻  YOUR MACHINE (Client)</text>
+      <text x="145" y="36" font-size="8.5" fill="#6366f1" text-anchor="middle">~/.ssh/</text>
+      <!-- SERVER header -->
+      <rect x="420" y="8" width="270" height="36" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+      <text x="555" y="23" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">🖥️  REMOTE SERVER</text>
+      <text x="555" y="36" font-size="8.5" fill="#059669" text-anchor="middle">~/.ssh/authorized_keys</text>
+      <!-- ── STEP 1: Key generation ── -->
+      <rect x="25" y="62" width="240" height="48" rx="9" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+      <text x="35" y="80" font-size="9" font-family="monospace" fill="#94a3b8">$ ssh-keygen -t ed25519</text>
+      <text x="35" y="96" font-size="8" font-family="monospace" fill="#64748b">Creates key pair in ~/.ssh/</text>
+      <!-- Private key box -->
+      <rect x="25"  y="124" width="112" height="44" rx="8" fill="#1e293b" stroke="#f43f5e" stroke-width="1.5"/>
+      <text x="81" y="142" font-size="10" text-anchor="middle">🔑</text>
+      <text x="81" y="157" font-size="9" font-weight="700" fill="#f43f5e" text-anchor="middle">PRIVATE KEY</text>
+      <text x="81" y="168" font-size="7.5" fill="#94a3b8" text-anchor="middle">id_ed25519</text>
+      <!-- Public key box -->
+      <rect x="153" y="124" width="112" height="44" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+      <text x="209" y="142" font-size="10" text-anchor="middle">🗝️</text>
+      <text x="209" y="157" font-size="9" font-weight="700" fill="#34d399" text-anchor="middle">PUBLIC KEY</text>
+      <text x="209" y="168" font-size="7.5" fill="#94a3b8" text-anchor="middle">id_ed25519.pub</text>
+      <!-- STEP 1 label -->
+      <rect x="25" y="178" width="240" height="18" rx="5" fill="#e0e7ff"/>
+      <text x="145" y="191" font-size="8.5" font-weight="600" fill="#4338ca" text-anchor="middle">① SETUP: Generate key pair (once)</text>
+      <!-- ── Public key → Server ── -->
+      <path d="M265 144 Q340 120 420 144" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrSSHG)"/>
+      <text x="340" y="116" font-size="8.5" fill="#059669" text-anchor="middle">ssh-copy-id alice@server</text>
+      <text x="340" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">copies public key once</text>
+      <!-- SERVER: authorized_keys -->
+      <rect x="435" y="124" width="240" height="44" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+      <text x="450" y="141" font-size="8.5" font-family="monospace" fill="#34d399">authorized_keys:</text>
+      <text x="450" y="155" font-size="8" font-family="monospace" fill="#64748b">ssh-ed25519 AAAA... alice@co</text>
+      <text x="450" y="166" font-size="8" font-family="monospace" fill="#475569">ssh-ed25519 BBBB... bob@co</text>
+      <!-- ── STEP 2: Connection ── -->
+      <rect x="435" y="178" width="240" height="18" rx="5" fill="#d1fae5"/>
+      <text x="555" y="191" font-size="8.5" font-weight="600" fill="#065f46" text-anchor="middle">② Stored on server once</text>
+      <!-- ── STEP 3: SSH Connect ── -->
+      <path d="M145 200 Q145 218 145 226" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSSH)"/>
+      <rect x="25" y="226" width="240" height="44" rx="9" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="35" y="244" font-size="9" font-family="monospace" fill="#94a3b8">$ ssh alice@prod-server</text>
+      <text x="35" y="258" font-size="8" font-family="monospace" fill="#64748b">signs challenge with private key</text>
+      <text x="35" y="271" font-size="7.5" fill="#475569">private key never leaves your machine</text>
+      <!-- ── connect arrow ── -->
+      <path d="M265 248 L419 248" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrSSH)"/>
+      <text x="340" y="242" font-size="8" fill="#6366f1" text-anchor="middle">SSH challenge / response</text>
+      <text x="340" y="258" font-size="7.5" fill="#94a3b8" text-anchor="middle">encrypted tunnel (port 22)</text>
+      <!-- ── SERVER verify ── -->
+      <rect x="419" y="226" width="256" height="44" rx="9" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+      <text x="436" y="244" font-size="9" font-family="monospace" fill="#34d399">✓ Signature matches!</text>
+      <text x="436" y="258" font-size="8" fill="#94a3b8">public key in authorized_keys</text>
+      <text x="436" y="272" font-size="7.5" fill="#64748b">no password ever sent over network</text>
+      <!-- ── Bottom caption ── -->
+      <text x="350" y="286" font-size="8.5" fill="#94a3b8" text-anchor="middle">Protect your private key with a passphrase · chmod 600 ~/.ssh/id_ed25519 · Never share it</text>
+    </svg>
   </div>
 
   <div class="mt-10">
