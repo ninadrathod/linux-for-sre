@@ -54,6 +54,7 @@
   ---------------------------------------------------------- */
   const sections = document.querySelectorAll("section[id]");
   const allNavLinks = document.querySelectorAll(".nav-link");
+  const dockLinks = document.querySelectorAll(".dock-link");
 
   function setActive(id) {
     allNavLinks.forEach((link) => {
@@ -62,6 +63,9 @@
       link.classList.toggle("text-indigo-700", isActive);
       link.classList.toggle("font-semibold", isActive);
       link.classList.toggle("text-slate-600", !isActive);
+    });
+    dockLinks.forEach((link) => {
+      link.classList.toggle("is-active", link.getAttribute("href") === "#" + id);
     });
   }
 
@@ -81,7 +85,7 @@
           }
         });
       },
-      { rootMargin: "-10% 0px -70% 0px" }
+      { rootMargin: "-32px 0px -70% 0px" } // active zone starts just under the top bar
     );
     sections.forEach((s) => observer.observe(s));
   }
@@ -90,18 +94,26 @@
      Copy-to-Clipboard Buttons for Code Blocks
   ---------------------------------------------------------- */
   document.querySelectorAll("pre").forEach((pre) => {
+    // Wrap each code block in a GNOME Terminal-style window
     const wrapper = document.createElement("div");
-    wrapper.className = "relative group";
+    wrapper.className = "term-window";
     pre.parentNode.insertBefore(wrapper, pre);
+
+    const titlebar = document.createElement("div");
+    titlebar.className =
+      "term-titlebar h-9 flex items-center gap-2 px-3 text-xs font-semibold select-none";
+    titlebar.innerHTML =
+      '<span class="w-16"></span>' +
+      '<span class="flex-1 text-center truncate">sre@ubuntu: ~</span>';
+    wrapper.appendChild(titlebar);
     wrapper.appendChild(pre);
 
     const btn = document.createElement("button");
     btn.textContent = "Copy";
     btn.className =
-      "copy-btn absolute top-3 right-3 opacity-0 group-hover:opacity-100 " +
-      "bg-zinc-700 hover:bg-zinc-600 text-zinc-300 text-xs px-2.5 py-1 " +
-      "rounded transition-all duration-150 font-mono";
-    wrapper.appendChild(btn);
+      "copy-btn w-16 bg-white/10 hover:bg-white/20 text-[#E6D5E1] text-xs py-1 " +
+      "rounded-md transition-colors duration-150 font-sans font-medium";
+    titlebar.appendChild(btn);
 
     btn.addEventListener("click", () => {
       const code = pre.querySelector("code")
@@ -111,10 +123,10 @@
         .writeText(code.trim())
         .then(() => {
           btn.textContent = "Copied!";
-          btn.classList.add("bg-emerald-700", "text-emerald-100");
+          btn.classList.add("!bg-ubuntu-orange", "!text-white");
           setTimeout(() => {
             btn.textContent = "Copy";
-            btn.classList.remove("bg-emerald-700", "text-emerald-100");
+            btn.classList.remove("!bg-ubuntu-orange", "!text-white");
           }, 2000);
         })
         .catch(() => {
@@ -125,6 +137,16 @@
   });
 
   /* ----------------------------------------------------------
+     Diagram Swipe Hint (narrow screens scroll diagrams sideways)
+  ---------------------------------------------------------- */
+  document.querySelectorAll(".diagram").forEach((diagram) => {
+    const hint = document.createElement("p");
+    hint.className = "diagram-hint sticky left-0 mt-2 text-center text-[11px] text-slate-400";
+    hint.textContent = "← swipe to see the full diagram →";
+    diagram.appendChild(hint);
+  });
+
+  /* ----------------------------------------------------------
      Smooth Scroll for Anchor Links
   ---------------------------------------------------------- */
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -132,7 +154,9 @@
       const target = document.querySelector(this.getAttribute("href"));
       if (target) {
         e.preventDefault();
-        const offset = 80; // account for sticky header on mobile
+        // GNOME top bar (32px) + header bar when shown (phones/tablets) + breathing room
+        const header = document.querySelector("header");
+        const offset = 32 + (header && header.offsetHeight ? header.offsetHeight : 0) + 16;
         const top =
           target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: "smooth" });
@@ -175,4 +199,20 @@
   ---------------------------------------------------------- */
   const yearEl = document.getElementById("current-year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* ----------------------------------------------------------
+     GNOME Top Bar Clock
+  ---------------------------------------------------------- */
+  const clockEl = document.getElementById("topbar-clock");
+  function updateClock() {
+    const now = new Date();
+    const day = now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+    const time = now.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+    // Date only on wider screens so the clock never collides with the tray icons
+    clockEl.innerHTML = '<span class="hidden sm:inline">' + day + "&nbsp;&nbsp;</span>" + time;
+  }
+  if (clockEl) {
+    updateClock();
+    setInterval(updateClock, 15000);
+  }
 })();

@@ -5,134 +5,254 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Linux for Site Reliability Engineers — Complete Tutorial</title>
   <meta name="description" content="A beginner-friendly, comprehensive Linux tutorial tailored for SREs. 10 modules, 100 MCQs, hands-on command reference." />
+  <meta name="theme-color" content="#E95420" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@300;400;500;600;700;800&family=Ubuntu+Sans+Mono:wght@400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet" />
   <script>
+    /* Ubuntu / Yaru palette.
+       The content uses Tailwind's default colour names, so they are remapped here:
+       slate → Yaru warm greys, indigo → Ubuntu orange, purple/violet → aubergine,
+       zinc → GNOME Terminal aubergine, emerald → Yaru green. */
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter','sans-serif'], mono: ['JetBrains Mono','monospace'] },
-          colors: { brand: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',500:'#6366f1',600:'#4f46e5',700:'#4338ca' } }
+          fontFamily: {
+            sans: ['"Ubuntu Sans"', 'Ubuntu', 'system-ui', 'sans-serif'],
+            mono: ['"Ubuntu Sans Mono"', '"Ubuntu Mono"', 'monospace']
+          },
+          colors: {
+            slate:   { 50:'#FAFAFA',100:'#F2F1F0',200:'#E6E4E2',300:'#CDCAC6',400:'#AEA79F',500:'#86807A',600:'#5E5A56',700:'#4A4744',800:'#333130',900:'#2B2B2B',950:'#1D1D1D' },
+            indigo:  { 50:'#FDF0EB',100:'#FBDDD0',200:'#F7BBA3',300:'#F29470',400:'#EE7448',500:'#E95420',600:'#E95420',700:'#C7461A',800:'#A33A13',900:'#7A2B0E',950:'#451707' },
+            purple:  { 50:'#F7EEF5',100:'#EED9EA',200:'#DDB3D5',300:'#C27FB6',400:'#A04D92',500:'#77216F',600:'#6A1D63',700:'#5E2750',800:'#4A1D40',900:'#2C001E',950:'#1A0012' },
+            violet:  { 50:'#F7EEF5',100:'#EED9EA',200:'#DDB3D5',300:'#C27FB6',400:'#A04D92',500:'#77216F',600:'#6A1D63',700:'#5E2750',800:'#4A1D40',900:'#2C001E',950:'#1A0012' },
+            zinc:    { 50:'#FFFFFF',100:'#FFFFFF',200:'#EEEEEC',300:'#D3D7CF',400:'#A7929F',500:'#8A7083',600:'#77216F',700:'#5E2750',800:'#4A1D40',900:'#3B1230',950:'#300A24' },
+            emerald: { 50:'#EEF7EF',100:'#D3ECD7',200:'#A8D8AF',300:'#73C07F',400:'#3EA552',500:'#26A269',600:'#0E8420',700:'#0B6E1A',800:'#085715',900:'#064010' },
+            ubuntu:  { orange:'#E95420', aubergine:'#77216F', mid:'#5E2750', dark:'#2C001E', warm:'#AEA79F', cool:'#333333', headerbar:'#EBEBEB', sidebar:'#F6F5F4', topbar:'#000000', dock:'#1D1D1D' }
+          }
         }
       }
     }
   </script>
   <style>
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; }
-    code, pre { font-family: 'JetBrains Mono', monospace; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    #sidebar::-webkit-scrollbar { width: 4px; }
+    body { font-family: 'Ubuntu Sans', 'Ubuntu', system-ui, sans-serif; }
+    code, pre { font-family: 'Ubuntu Sans Mono', 'Ubuntu Mono', monospace; }
+    /* Long inline snippets wrap instead of pushing past the screen edge on phones */
+    :not(pre) > code { overflow-wrap: anywhere; }
+
+    /* Desktop wallpaper (Ubuntu default-style warm gradient) */
+    .wallpaper {
+      background:
+        radial-gradient(ellipse 80% 60% at 85% 10%, rgba(233,84,32,.55), transparent 60%),
+        radial-gradient(ellipse 70% 70% at 10% 90%, rgba(119,33,111,.65), transparent 60%),
+        linear-gradient(135deg, #2C001E 0%, #5E2750 45%, #77216F 70%, #E95420 130%);
+      background-attachment: fixed;
+    }
+
+    /* Scrollbars (Yaru overlay style) */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.25); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,.45); background-clip: padding-box; }
+    #sidebar::-webkit-scrollbar { width: 6px; }
+
     details summary::-webkit-details-marker { display: none; }
     details summary { list-style: none; }
-    .nav-link { transition: all 0.15s ease; border-radius: 0.5rem; }
-    .prose-content h3 { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 1.5rem 0 0.5rem; }
-    .prose-content p { color: #475569; line-height: 1.75; margin-bottom: 0.75rem; }
-    .prose-content ul { list-style: disc; padding-left: 1.5rem; color: #475569; margin-bottom: 0.75rem; }
+
+    /* GNOME sidebar rows */
+    .nav-link { transition: background-color .12s ease, color .12s ease; border-radius: 6px; }
+
+    /* Ubuntu dock — icon size follows viewport height so all items always fit */
+    #dock { --dock-item: clamp(32px, calc((100vh - 32px - 80px) / 6), 48px); }
+    .dock-link { position: relative; flex-shrink: 0; width: var(--dock-item) !important; height: var(--dock-item) !important; }
+    .dock-link > span:first-child { width: calc(var(--dock-item) * .83) !important; height: calc(var(--dock-item) * .83) !important; }
+    .dock-link svg { width: calc(var(--dock-item) * .42) !important; height: calc(var(--dock-item) * .42) !important; }
+    .dock-link::before {
+      content: ""; position: absolute; left: -7px; top: 50%; width: 4px; height: 4px;
+      border-radius: 9999px; background: #E95420; transform: translateY(-50%) scale(0);
+      transition: transform .15s ease;
+    }
+    .dock-link.is-active::before { transform: translateY(-50%) scale(1); }
+    .dock-link.is-active { background: rgba(255,255,255,.12); }
+    .dock-link .dock-tip {
+      position: absolute; left: calc(100% + 14px); top: 50%; transform: translateY(-50%);
+      white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .12s ease;
+      background: rgba(29,29,29,.95); color: #fff; font-size: 12px; padding: 5px 10px; border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.35);
+    }
+    .dock-link:hover .dock-tip { opacity: 1; }
+
+    /* Diagrams on narrow screens */
+    .diagram { -webkit-overflow-scrolling: touch; }
+    .diagram-hint { display: none; }
+    @media (max-width: 639px) { .diagram-hint { display: block; } }
+
+    /* Yaru window controls */
+    .win-btn { width: 24px; height: 24px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,.08); color: #3D3D3D; }
+    .win-btn:hover { background: rgba(0,0,0,.14); }
+    .win-btn.close { background: #E95420; color: #fff; }
+    .win-btn.close:hover { background: #F06C3E; }
+
+    /* GNOME Terminal-style code blocks (wrapper built in script.js) */
+    .term-window { margin: 1.25rem 0; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.12), 0 6px 18px rgba(44,0,30,.18); border: 1px solid rgba(0,0,0,.25); }
+    .term-window pre { margin: 0 !important; border-radius: 0 !important; background: #300A24 !important; }
+    .term-titlebar { background: #3B1230; color: #E6D5E1; }
+
+    .prose-content h3 { font-size: 1.15rem; font-weight: 600; color: #2B2B2B; margin: 1.5rem 0 0.5rem; }
+    .prose-content p { color: #4A4744; line-height: 1.75; margin-bottom: 0.75rem; }
+    .prose-content ul { list-style: disc; padding-left: 1.5rem; color: #4A4744; margin-bottom: 0.75rem; }
     .prose-content ul li { margin-bottom: 0.25rem; line-height: 1.7; }
-    .diagram-ph { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); }
+    .prose-content ul li::marker { color: #E95420; }
+    .diagram-ph { background: linear-gradient(135deg, #FAFAFA 0%, #F2F1F0 100%); }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
+<body class="wallpaper text-slate-800 antialiased">
 
-  <!-- ═══════════════════ PROGRESS BAR ═══════════════════ -->
-  <div class="fixed top-0 left-0 right-0 z-[60] h-1 bg-slate-200">
-    <div id="progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-100" style="width:0%"></div>
+  <!-- ═══════════════════ GNOME TOP BAR ═══════════════════ -->
+  <div class="fixed top-0 left-0 right-0 z-[60] h-8 bg-ubuntu-topbar text-white text-[13px] font-medium select-none">
+    <div class="relative h-full flex items-center justify-between px-2">
+      <a href="#top" class="flex items-center gap-1.5 px-3 h-6 rounded-full hover:bg-white/15 transition-colors" aria-label="Activities">
+        <span class="w-5 h-1.5 rounded-full bg-white"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+      </a>
+      <span id="topbar-clock" class="absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-3 h-6 inline-flex items-center rounded-full hover:bg-white/15 transition-colors"></span>
+      <div class="flex items-center gap-2.5 px-3 h-6 rounded-full hover:bg-white/15 transition-colors" aria-hidden="true">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 8.5a15 15 0 0120 0M5 12a10.5 10.5 0 0114 0M8.5 15.5a5.5 5.5 0 017 0M12 19h.01"/></svg>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H3v6h3l5 4V5zM15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/></svg>
+        <svg class="w-5 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 28 24"><rect x="2" y="6" width="21" height="12" rx="2.5"/><rect x="5" y="9" width="12" height="6" rx="1" fill="currentColor" stroke="none"/><path stroke-linecap="round" d="M26 10v4"/></svg>
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.3 7.3a1 1 0 011.4 0L10 10.6l3.3-3.3a1 1 0 111.4 1.4l-4 4a1 1 0 01-1.4 0l-4-4a1 1 0 010-1.4z"/></svg>
+      </div>
+    </div>
+    <!-- Reading progress (thin Ubuntu-orange line under the top bar) -->
+    <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-white/10">
+      <div id="progress-bar" class="h-full bg-ubuntu-orange transition-all duration-100" style="width:0%"></div>
+    </div>
   </div>
 
-  <!-- ═══════════════════ MOBILE HEADER ═══════════════════ -->
-  <header class="lg:hidden fixed top-1 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200 shadow-sm">
-    <div class="flex items-center justify-between px-4 h-14">
-      <div class="flex items-center gap-2.5">
-        <div class="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
-          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        </div>
-        <span class="font-bold text-slate-900 text-sm">Linux for SRE</span>
-      </div>
-      <button id="menu-btn" class="p-2 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Open menu">
-        <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
-    </div>
-  </header>
+  <!-- ═══════════════════ UBUNTU DOCK (desktop) ═══════════════════ -->
+  <nav id="dock" class="hidden lg:flex fixed top-8 left-0 bottom-0 z-50 w-[68px] flex-col items-center gap-1.5 py-2.5 bg-ubuntu-dock/90 backdrop-blur border-r border-black/40" aria-label="Dock">
+    <a href="#prerequisites" class="dock-link w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"><span class="w-10 h-10 rounded-[10px] flex items-center justify-center bg-gradient-to-b from-[#62A0EA] to-[#1C71D8] text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/></svg></span><span class="dock-tip">Help — Prerequisites</span></a>
+    <a href="#networking" class="dock-link w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"><span class="w-10 h-10 rounded-[10px] flex items-center justify-center bg-gradient-to-b from-[#FF9F43] to-[#E95420] text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg></span><span class="dock-tip">Web Browser — Networking</span></a>
+    <a href="#filesystem" class="dock-link w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"><span class="w-10 h-10 rounded-[10px] flex items-center justify-center bg-gradient-to-b from-[#F6A35B] to-[#E8833A] text-white"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 6.5A2.5 2.5 0 015.5 4h4l2 2h7A2.5 2.5 0 0121 8.5v9a2.5 2.5 0 01-2.5 2.5h-13A2.5 2.5 0 013 17.5v-11z"/></svg></span><span class="dock-tip">Files — Filesystem &amp; Navigation</span></a>
+    <a href="#scripting" class="dock-link w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"><span class="w-10 h-10 rounded-[10px] flex items-center justify-center bg-gradient-to-b from-[#5E2750] to-[#300A24] ring-1 ring-white/10 text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3"/></svg></span><span class="dock-tip">Terminal — Shell Scripting</span></a>
+    <a href="#sysadmin" class="dock-link w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"><span class="w-10 h-10 rounded-[10px] flex items-center justify-center bg-gradient-to-b from-[#9A9996] to-[#5E5C64] text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.3 4.3c.4-1.7 3-1.7 3.4 0a1.7 1.7 0 002.6 1.1c1.5-.9 3.3.8 2.4 2.4a1.7 1.7 0 001 2.5c1.8.4 1.8 3 0 3.4a1.7 1.7 0 00-1 2.6c.9 1.5-.9 3.3-2.4 2.4a1.7 1.7 0 00-2.6 1c-.4 1.8-3 1.8-3.4 0a1.7 1.7 0 00-2.5-1c-1.6.9-3.3-.9-2.4-2.4a1.7 1.7 0 00-1.1-2.6c-1.7-.4-1.7-3 0-3.4a1.7 1.7 0 001.1-2.5c-.9-1.6.8-3.3 2.4-2.4 1 .6 2.3.1 2.5-1.1z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="dock-tip">Settings — SysAdmin &amp; Security</span></a>
+    <div class="mt-auto w-8 border-t border-white/15 mb-1.5"></div>
+    <a href="#top" class="dock-link w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Show applications">
+      <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>
+      <span class="dock-tip">Back to top</span>
+    </a>
+  </nav>
 
   <!-- ═══════════════════ MOBILE SLIDE-OUT MENU ═══════════════════ -->
   <div id="menu-overlay" class="lg:hidden fixed inset-0 z-[55] bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" style="opacity:0" onclick="this.style.opacity=0;this.style.pointerEvents='none';document.getElementById('mobile-menu').classList.add('translate-x-full');document.getElementById('mobile-menu').classList.remove('translate-x-0')"></div>
-  <div id="mobile-menu" class="lg:hidden fixed top-0 right-0 bottom-0 z-[56] w-72 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200">
-      <span class="font-bold text-slate-900">Table of Contents</span>
-      <button id="menu-close" class="p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
-        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+  <div id="mobile-menu" class="lg:hidden fixed top-8 right-0 bottom-0 z-[56] w-72 max-w-[85vw] bg-ubuntu-sidebar shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="flex items-center justify-between px-4 h-12 bg-ubuntu-headerbar border-b border-black/10">
+      <span class="font-semibold text-slate-900 text-sm">Table of Contents</span>
+      <button id="menu-close" class="win-btn close" aria-label="Close menu">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
-    <nav id="mobile-nav" class="flex-1 overflow-y-auto p-4 space-y-1">
-      <a href="#prerequisites" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">0</span>Prerequisites</a>
-      <a href="#intro" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">1</span>Linux &amp; SRE Intro</a>
-      <a href="#filesystem" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">2</span>Filesystem &amp; Navigation</a>
-      <a href="#permissions" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">3</span>Permissions &amp; Ownership</a>
-      <a href="#processes" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">4</span>Process Management</a>
-      <a href="#networking" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">5</span>Networking Essentials</a>
-      <a href="#monitoring" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">6</span>System Monitoring</a>
-      <a href="#logs" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">7</span>Log Management</a>
-      <a href="#scripting" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">8</span>Shell Scripting</a>
-      <a href="#sysadmin" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">9</span>SysAdmin &amp; Security</a>
+    <nav id="mobile-nav" class="flex-1 overflow-y-auto p-2 space-y-0.5">
+      <a href="#prerequisites" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">0</span>Prerequisites</a>
+      <a href="#intro" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">1</span>Linux &amp; SRE Intro</a>
+      <a href="#filesystem" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">2</span>Filesystem &amp; Navigation</a>
+      <a href="#permissions" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">3</span>Permissions &amp; Ownership</a>
+      <a href="#processes" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">4</span>Process Management</a>
+      <a href="#networking" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">5</span>Networking Essentials</a>
+      <a href="#monitoring" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">6</span>System Monitoring</a>
+      <a href="#logs" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">7</span>Log Management</a>
+      <a href="#scripting" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">8</span>Shell Scripting</a>
+      <a href="#sysadmin" class="nav-link flex items-center gap-3 px-3 py-2.5 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-6 h-6 rounded-md bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">9</span>SysAdmin &amp; Security</a>
     </nav>
   </div>
 
-  <!-- ═══════════════════ DESKTOP LAYOUT ═══════════════════ -->
-  <div class="max-w-screen-xl mx-auto lg:flex">
+  <!-- ═══════════════════ DESKTOP (beside the dock, under the top bar) ═══════════════════ -->
+  <div id="top" class="pt-8 lg:pl-[68px] bg-white min-h-screen">
 
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="hidden lg:flex lg:flex-col w-64 xl:w-72 shrink-0 sticky top-1 h-screen overflow-y-auto bg-white border-r border-slate-200 pt-8 pb-6">
-      <div class="px-6 mb-6">
-        <div class="flex items-center gap-2.5 mb-1">
-          <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-sm">
-            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          </div>
-          <span class="font-extrabold text-slate-900 text-base leading-tight">Linux for SRE</span>
-        </div>
-        <p class="text-xs text-slate-400 mt-1.5 ml-0.5">10 Modules · 100 MCQs</p>
+    <!-- HEADER BAR (phones/tablets; desktop navigates via sidebar + dock) -->
+    <header class="lg:hidden sticky top-8 z-40 h-12 bg-ubuntu-headerbar border-b border-black/10 flex items-center px-2 gap-2">
+      <span class="w-7 h-7 ml-1 rounded-md bg-gradient-to-b from-[#5E2750] to-[#300A24] flex items-center justify-center text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3"/></svg>
+      </span>
+      <div class="flex-1 min-w-0 text-center">
+        <p class="text-sm font-bold text-slate-900 truncate"><span class="sm:hidden">Linux for SRE</span><span class="hidden sm:inline">Linux for Site Reliability Engineers</span></p>
       </div>
-      <nav class="px-3 space-y-0.5 flex-1">
-        <p class="px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400 mb-1">Contents</p>
-        <a href="#prerequisites" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">0</span>Prerequisites</a>
-        <a href="#intro" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">1</span>Linux &amp; SRE Intro</a>
-        <a href="#filesystem" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">2</span>Filesystem &amp; Navigation</a>
-        <a href="#permissions" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">3</span>Permissions &amp; Ownership</a>
-        <a href="#processes" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">4</span>Process Management</a>
-        <a href="#networking" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">5</span>Networking Essentials</a>
-        <a href="#monitoring" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">6</span>System Monitoring</a>
-        <a href="#logs" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">7</span>Log Management</a>
-        <a href="#scripting" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">8</span>Shell Scripting</a>
-        <a href="#sysadmin" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"><span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">9</span>SysAdmin &amp; Security</a>
+      <button id="back-to-top" class="w-9 h-9 shrink-0 rounded-md hover:bg-black/5 flex items-center justify-center text-slate-700 transition-opacity duration-200 opacity-0 pointer-events-none" aria-label="Back to top" title="Back to top">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
+      </button>
+      <button id="menu-btn" class="shrink-0 w-9 h-9 rounded-md hover:bg-black/5 flex items-center justify-center" aria-label="Open menu">
+        <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </header>
+
+  <div class="lg:flex">
+
+    <!-- SIDEBAR (GNOME Files / Settings style) -->
+    <aside id="sidebar" class="hidden lg:flex lg:flex-col w-64 xl:w-72 shrink-0 sticky top-8 h-[calc(100vh-2rem)] overflow-y-auto bg-ubuntu-sidebar border-r border-black/10 pt-4 pb-5">
+      <div class="flex items-center gap-2.5 px-5 pb-4 mb-2 border-b border-black/10">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-b from-[#5E2750] to-[#300A24] flex items-center justify-center text-white shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3"/></svg>
+        </span>
+        <div class="min-w-0">
+          <p class="text-sm font-bold text-slate-900 leading-tight">Linux for SRE</p>
+          <p class="text-[11px] text-slate-500">10 modules · 100 MCQs</p>
+        </div>
+      </div>
+      <nav class="px-2 space-y-0.5 flex-1">
+        <p class="px-3 pt-1 pb-1.5 text-xs font-bold text-slate-500">Modules</p>
+        <a href="#prerequisites" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">0</span>Prerequisites</a>
+        <a href="#intro" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">1</span>Linux &amp; SRE Intro</a>
+        <a href="#filesystem" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">2</span>Filesystem &amp; Navigation</a>
+        <a href="#permissions" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">3</span>Permissions &amp; Ownership</a>
+        <a href="#processes" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">4</span>Process Management</a>
+        <a href="#networking" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">5</span>Networking Essentials</a>
+        <a href="#monitoring" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">6</span>System Monitoring</a>
+        <a href="#logs" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">7</span>Log Management</a>
+        <a href="#scripting" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">8</span>Shell Scripting</a>
+        <a href="#sysadmin" class="nav-link flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-black/5 hover:text-slate-900"><span class="w-5 h-5 rounded-md bg-slate-200 text-slate-600 text-[10px] font-bold flex items-center justify-center shrink-0">9</span>SysAdmin &amp; Security</a>
       </nav>
-      <div class="px-6 mt-6 pt-5 border-t border-slate-100">
-        <div class="bg-indigo-50 rounded-xl p-3.5">
-          <p class="text-xs font-semibold text-indigo-700 mb-0.5">100 MCQs included</p>
-          <p class="text-xs text-indigo-500">10 questions per section with detailed explanations</p>
+      <div class="px-4 mt-5 pt-4 border-t border-black/10">
+        <div class="rounded-xl p-3.5 bg-white border border-black/10">
+          <p class="text-xs font-semibold text-slate-800 mb-0.5 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ubuntu-orange"></span>100 MCQs included</p>
+          <p class="text-xs text-slate-500">10 questions per section with detailed explanations</p>
         </div>
       </div>
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 min-w-0 pt-16 lg:pt-0">
+    <main class="flex-1 min-w-0 bg-white">
 
       <!-- HERO -->
-      <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 text-white px-6 md:px-10 py-14 md:py-20">
-        <div class="max-w-3xl">
-          <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3.5 py-1.5 text-xs font-medium mb-6 border border-white/20">
-            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            Beginner-Friendly · SRE-Focused · 100 Practice Questions
+      <div class="relative overflow-hidden text-white px-6 md:px-10 py-12 md:py-16" style="background:radial-gradient(ellipse 70% 90% at 100% 0%, rgba(233,84,32,.85), transparent 60%),linear-gradient(135deg,#2C001E 0%,#5E2750 55%,#77216F 100%)">
+        <div class="relative grid xl:grid-cols-[1fr_auto] gap-10 items-center">
+          <div class="max-w-2xl">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-3.5 py-1.5 text-xs font-medium mb-6 border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-ubuntu-orange"></span>
+              Beginner-Friendly · SRE-Focused · 100 Practice Questions
+            </div>
+            <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-5">Linux for Site Reliability Engineers</h1>
+            <p class="text-white/80 text-lg md:text-xl font-light leading-relaxed mb-8">Master the Linux skills that power production systems. From your very first terminal command to writing shell scripts that automate operations — explained in plain English for absolute beginners.</p>
+            <div class="flex flex-wrap gap-3">
+              <a href="#prerequisites" class="bg-ubuntu-orange text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#F06C3E] transition-colors text-sm shadow-lg shadow-black/25">Start Learning →</a>
+              <a href="#scripting" class="bg-white/10 border border-white/30 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-white/20 transition-colors text-sm">Jump to Scripting</a>
+            </div>
           </div>
-          <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mb-5">Linux for Site Reliability Engineers</h1>
-          <p class="text-indigo-200 text-lg md:text-xl leading-relaxed mb-8">Master the Linux skills that power production systems. From your very first terminal command to writing shell scripts that automate operations — explained in plain English for absolute beginners.</p>
-          <div class="flex flex-wrap gap-3">
-            <a href="#prerequisites" class="bg-white text-indigo-700 font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-50 transition-colors text-sm shadow-lg shadow-indigo-900/20">Start Learning →</a>
-            <a href="#scripting" class="bg-white/10 border border-white/30 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-white/20 transition-colors text-sm">Jump to Scripting</a>
+          <!-- Terminal preview -->
+          <div class="hidden xl:block w-[22rem] rounded-xl overflow-hidden shadow-2xl shadow-black/40 ring-1 ring-black/40 font-mono text-[13px]" aria-hidden="true">
+            <div class="h-9 bg-[#3B1230] flex items-center px-3 text-[#E6D5E1] text-xs font-sans font-semibold">
+              <span class="flex-1 text-center">sre@ubuntu: ~</span>
+              <span class="flex gap-1.5"><span class="w-3.5 h-3.5 rounded-full bg-white/15"></span><span class="w-3.5 h-3.5 rounded-full bg-white/15"></span><span class="w-3.5 h-3.5 rounded-full bg-ubuntu-orange"></span></span>
+            </div>
+            <div class="bg-[#300A24] p-4 leading-relaxed text-[#EEEEEC]">
+              <p><span class="text-[#8AE234] font-bold">sre@ubuntu</span>:<span class="text-[#729FCF] font-bold">~</span>$ uptime</p>
+              <p class="text-[#D3D7CF]"> 09:41:07 up 412 days, load: 0.12</p>
+              <p><span class="text-[#8AE234] font-bold">sre@ubuntu</span>:<span class="text-[#729FCF] font-bold">~</span>$ systemctl is-active nginx</p>
+              <p class="text-[#8AE234]">active</p>
+              <p><span class="text-[#8AE234] font-bold">sre@ubuntu</span>:<span class="text-[#729FCF] font-bold">~</span>$ ./start-learning.sh <span class="inline-block w-2 h-4 align-middle bg-[#EEEEEC] animate-pulse"></span></p>
+            </div>
           </div>
         </div>
       </div>
@@ -144,8 +264,8 @@
 ════════════════════════════════════════════════════════ -->
 <section id="prerequisites">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-slate-200 text-slate-600 font-extrabold text-sm shrink-0">0</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Prerequisites &amp; Getting Started</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">0</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Prerequisites &amp; Getting Started</h2>
   </div>
 
   <div class="prose-content">
@@ -183,46 +303,46 @@ echo "Hello, SRE world!"</code></pre>
 
   <!-- DIAGRAM PLACEHOLDER -->
   <!-- DIAGRAM 1: GUI vs Terminal -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">Same action — two interfaces</p>
-    <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="GUI vs Terminal comparison">
+    <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="GUI vs Terminal comparison">
       <!-- ── LEFT: GUI panel ── -->
-      <rect x="2" y="2" width="295" height="200" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
-      <rect x="2" y="2" width="295" height="34" rx="10" fill="#e2e8f0"/>
-      <rect x="2" y="24" width="295" height="12" fill="#e2e8f0"/>
+      <rect x="2" y="2" width="295" height="200" rx="10" fill="#FAFAFA" stroke="#E6E4E2" stroke-width="1.5"/>
+      <rect x="2" y="2" width="295" height="34" rx="10" fill="#E6E4E2"/>
+      <rect x="2" y="24" width="295" height="12" fill="#E6E4E2"/>
       <circle cx="18" cy="19" r="5" fill="#f87171"/><circle cx="34" cy="19" r="5" fill="#fbbf24"/><circle cx="50" cy="19" r="5" fill="#34d399"/>
-      <text x="148" y="23" font-size="11" font-weight="600" fill="#64748b" text-anchor="middle">📁  File Manager</text>
+      <text x="148" y="23" font-size="11" font-weight="600" fill="#7A746E" text-anchor="middle">📁  File Manager</text>
       <!-- rows -->
       <rect x="12" y="44" width="275" height="24" rx="5" fill="#eff6ff"/>
       <text x="30" y="60" font-size="12">📁</text><text x="50" y="61" font-size="11" font-weight="600" fill="#1e40af">documents</text>
       <rect x="12" y="72" width="275" height="24" rx="5" fill="white"/>
-      <text x="30" y="88" font-size="12">📁</text><text x="50" y="89" font-size="11" fill="#1e293b">downloads</text>
+      <text x="30" y="88" font-size="12">📁</text><text x="50" y="89" font-size="11" fill="#3D1233">downloads</text>
       <rect x="12" y="100" width="275" height="24" rx="5" fill="white"/>
-      <text x="30" y="116" font-size="12">📄</text><text x="50" y="117" font-size="11" fill="#1e293b">config.yaml</text><text x="258" y="117" font-size="10" fill="#94a3b8">2.4 KB</text>
+      <text x="30" y="116" font-size="12">📄</text><text x="50" y="117" font-size="11" fill="#3D1233">config.yaml</text><text x="258" y="117" font-size="10" fill="#AEA79F">2.4 KB</text>
       <rect x="12" y="128" width="275" height="24" rx="5" fill="white"/>
-      <text x="30" y="144" font-size="12">📄</text><text x="50" y="145" font-size="11" fill="#1e293b">deploy.sh</text><text x="260" y="145" font-size="10" fill="#94a3b8">1.1 KB</text>
+      <text x="30" y="144" font-size="12">📄</text><text x="50" y="145" font-size="11" fill="#3D1233">deploy.sh</text><text x="260" y="145" font-size="10" fill="#AEA79F">1.1 KB</text>
       <rect x="12" y="156" width="275" height="24" rx="5" fill="white"/>
-      <text x="30" y="172" font-size="12">📄</text><text x="50" y="173" font-size="11" fill="#1e293b">README.md</text><text x="255" y="173" font-size="10" fill="#94a3b8">3.8 KB</text>
-      <text x="148" y="198" font-size="10" fill="#94a3b8" text-anchor="middle">Point · Click · Drag</text>
+      <text x="30" y="172" font-size="12">📄</text><text x="50" y="173" font-size="11" fill="#3D1233">README.md</text><text x="255" y="173" font-size="10" fill="#AEA79F">3.8 KB</text>
+      <text x="148" y="198" font-size="10" fill="#AEA79F" text-anchor="middle">Point · Click · Drag</text>
       <!-- ── VS badge ── -->
-      <circle cx="330" cy="105" r="26" fill="#4f46e5"/>
+      <circle cx="330" cy="105" r="26" fill="#E95420"/>
       <text x="330" y="110" font-size="13" font-weight="700" fill="white" text-anchor="middle">VS</text>
       <!-- ── RIGHT: Terminal panel ── -->
-      <rect x="363" y="2" width="295" height="200" rx="10" fill="#0f172a"/>
-      <rect x="363" y="2" width="295" height="34" rx="10" fill="#1e293b"/>
-      <rect x="363" y="24" width="295" height="12" fill="#1e293b"/>
+      <rect x="363" y="2" width="295" height="200" rx="10" fill="#300A24"/>
+      <rect x="363" y="2" width="295" height="34" rx="10" fill="#3D1233"/>
+      <rect x="363" y="24" width="295" height="12" fill="#3D1233"/>
       <circle cx="379" cy="19" r="5" fill="#f87171"/><circle cx="395" cy="19" r="5" fill="#fbbf24"/><circle cx="411" cy="19" r="5" fill="#34d399"/>
-      <text x="510" y="23" font-size="11" font-weight="600" fill="#94a3b8" text-anchor="middle">Terminal — bash</text>
-      <text x="376" y="58" font-size="11" font-family="monospace" fill="#94a3b8">$</text>
-      <text x="388" y="58" font-size="11" font-family="monospace" fill="#e2e8f0">ls -la</text>
-      <text x="376" y="75" font-size="10" font-family="monospace" fill="#64748b">total 32</text>
-      <text x="376" y="91" font-size="10" font-family="monospace" fill="#e2e8f0">drwxr-xr-x  <tspan fill="#60a5fa">documents</tspan></text>
-      <text x="376" y="107" font-size="10" font-family="monospace" fill="#e2e8f0">drwxr-xr-x  <tspan fill="#60a5fa">downloads</tspan></text>
-      <text x="376" y="123" font-size="10" font-family="monospace" fill="#e2e8f0">-rw-r--r--  <tspan fill="#86efac">config.yaml</tspan></text>
-      <text x="376" y="139" font-size="10" font-family="monospace" fill="#e2e8f0">-rwxr-xr-x  <tspan fill="#fdba74">deploy.sh</tspan></text>
-      <text x="376" y="155" font-size="10" font-family="monospace" fill="#e2e8f0">-rw-r--r--  <tspan fill="#86efac">README.md</tspan></text>
-      <text x="376" y="175" font-size="11" font-family="monospace" fill="#94a3b8">$ <tspan fill="#a78bfa">▌</tspan></text>
-      <text x="510" y="198" font-size="10" fill="#475569" text-anchor="middle">Type · Read · Automate</text>
+      <text x="510" y="23" font-size="11" font-weight="600" fill="#AEA79F" text-anchor="middle">Terminal — bash</text>
+      <text x="376" y="58" font-size="11" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#AEA79F">$</text>
+      <text x="388" y="58" font-size="11" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">ls -la</text>
+      <text x="376" y="75" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#7A746E">total 32</text>
+      <text x="376" y="91" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">drwxr-xr-x  <tspan fill="#60a5fa">documents</tspan></text>
+      <text x="376" y="107" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">drwxr-xr-x  <tspan fill="#60a5fa">downloads</tspan></text>
+      <text x="376" y="123" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">-rw-r--r--  <tspan fill="#86efac">config.yaml</tspan></text>
+      <text x="376" y="139" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">-rwxr-xr-x  <tspan fill="#fdba74">deploy.sh</tspan></text>
+      <text x="376" y="155" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">-rw-r--r--  <tspan fill="#86efac">README.md</tspan></text>
+      <text x="376" y="175" font-size="11" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#AEA79F">$ <tspan fill="#C27FB6">▌</tspan></text>
+      <text x="510" y="198" font-size="10" fill="#5E5A56" text-anchor="middle">Type · Read · Automate</text>
     </svg>
   </div>
 
@@ -453,8 +573,8 @@ echo "Hello, SRE world!"</code></pre>
 ════════════════════════════════════════════════════════ -->
 <section id="intro">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 font-extrabold text-sm shrink-0">1</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Introduction to Linux &amp; SRE</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">1</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Introduction to Linux &amp; SRE</h2>
   </div>
 
   <div class="prose-content">
@@ -480,25 +600,25 @@ echo "Hello, SRE world!"</code></pre>
 
   <!-- DIAGRAM PLACEHOLDER -->
   <!-- DIAGRAM 2: SRE Responsibility Wheel -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">The Six Pillars of SRE</p>
-    <svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="SRE six pillars diagram">
+    <svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="SRE six pillars diagram">
       <!-- ── Center circle ── -->
-      <circle cx="310" cy="180" r="62" fill="#4f46e5" stroke="#818cf8" stroke-width="3"/>
+      <circle cx="310" cy="180" r="62" fill="#E95420" stroke="#EE7448" stroke-width="3"/>
       <text x="310" y="174" font-size="16" font-weight="800" fill="white" text-anchor="middle">SRE</text>
-      <text x="310" y="194" font-size="10" fill="#c7d2fe" text-anchor="middle">Core Discipline</text>
+      <text x="310" y="194" font-size="10" fill="#F7BBA3" text-anchor="middle">Core Discipline</text>
       <!-- spokes -->
-      <line x1="310" y1="118" x2="310" y2="82" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="310" y1="118" x2="310" y2="82" stroke="#E95420" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
       <line x1="364" y1="150" x2="396" y2="130" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
       <line x1="364" y1="210" x2="396" y2="230" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
       <line x1="310" y1="242" x2="310" y2="278" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
-      <line x1="256" y1="210" x2="224" y2="230" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="256" y1="210" x2="224" y2="230" stroke="#A04D92" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
       <line x1="256" y1="150" x2="224" y2="130" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
       <!-- ── TOP: Reliability ── -->
-      <rect x="232" y="10" width="156" height="68" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+      <rect x="232" y="10" width="156" height="68" rx="12" fill="#FBDDD0" stroke="#E95420" stroke-width="1.5"/>
       <text x="310" y="36" font-size="18" text-anchor="middle">🎯</text>
-      <text x="310" y="55" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">Reliability</text>
-      <text x="310" y="70" font-size="9.5" fill="#6366f1" text-anchor="middle">SLOs &amp; Error Budgets</text>
+      <text x="310" y="55" font-size="12" font-weight="700" fill="#A33A13" text-anchor="middle">Reliability</text>
+      <text x="310" y="70" font-size="9.5" fill="#E95420" text-anchor="middle">SLOs &amp; Error Budgets</text>
       <!-- ── TOP-RIGHT: Automation ── -->
       <rect x="420" y="85" width="190" height="68" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
       <text x="515" y="111" font-size="18" text-anchor="middle">⚡</text>
@@ -515,10 +635,10 @@ echo "Hello, SRE world!"</code></pre>
       <text x="310" y="325" font-size="12" font-weight="700" fill="#9f1239" text-anchor="middle">Incident Response</text>
       <text x="310" y="340" font-size="9.5" fill="#e11d48" text-anchor="middle">On-call &amp; Postmortems</text>
       <!-- ── BOTTOM-LEFT: Capacity Planning ── -->
-      <rect x="10" y="205" width="190" height="68" rx="12" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1.5"/>
+      <rect x="10" y="205" width="190" height="68" rx="12" fill="#F7EEF5" stroke="#A04D92" stroke-width="1.5"/>
       <text x="105" y="231" font-size="18" text-anchor="middle">📈</text>
-      <text x="105" y="250" font-size="12" font-weight="700" fill="#5b21b6" text-anchor="middle">Capacity Planning</text>
-      <text x="105" y="265" font-size="9.5" fill="#7c3aed" text-anchor="middle">Scale Ahead of Demand</text>
+      <text x="105" y="250" font-size="12" font-weight="700" fill="#5E2750" text-anchor="middle">Capacity Planning</text>
+      <text x="105" y="265" font-size="9.5" fill="#77216F" text-anchor="middle">Scale Ahead of Demand</text>
       <!-- ── TOP-LEFT: Scalability ── -->
       <rect x="10" y="85" width="190" height="68" rx="12" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.5"/>
       <text x="105" y="111" font-size="18" text-anchor="middle">🔧</text>
@@ -659,8 +779,8 @@ echo "Hello, SRE world!"</code></pre>
 ════════════════════════════════════════════════════════ -->
 <section id="filesystem">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 font-extrabold text-sm shrink-0">2</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Linux Filesystem &amp; Navigation</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">2</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Linux Filesystem &amp; Navigation</h2>
   </div>
 
   <div class="prose-content">
@@ -711,66 +831,66 @@ rm -rf /tmp/old_data/    <span class="text-zinc-400"># CAREFUL: recursive force 
 
   <!-- DIAGRAM PLACEHOLDER -->
   <!-- DIAGRAM 3: Linux Filesystem Hierarchy -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Linux Filesystem Hierarchy Standard (FHS)</p>
-    <svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Linux filesystem hierarchy tree">
+    <svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="Linux filesystem hierarchy tree">
       <!-- ── Root node ── -->
-      <rect x="310" y="8" width="120" height="44" rx="10" fill="#4f46e5" stroke="#6366f1" stroke-width="2"/>
+      <rect x="310" y="8" width="120" height="44" rx="10" fill="#E95420" stroke="#E95420" stroke-width="2"/>
       <text x="370" y="27" font-size="18" font-weight="800" fill="white" text-anchor="middle">/</text>
-      <text x="370" y="44" font-size="9" fill="#c7d2fe" text-anchor="middle">root of all</text>
+      <text x="370" y="44" font-size="9" fill="#F7BBA3" text-anchor="middle">root of all</text>
       <!-- trunk line -->
-      <line x1="370" y1="52" x2="370" y2="70" stroke="#6366f1" stroke-width="2"/>
+      <line x1="370" y1="52" x2="370" y2="70" stroke="#E95420" stroke-width="2"/>
       <!-- horizontal bar -->
-      <line x1="50" y1="70" x2="690" y2="70" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="50" y1="70" x2="690" y2="70" stroke="#CDCAC6" stroke-width="1.5"/>
       <!-- ── 8 child nodes ── each with a vertical drop and label -->
       <!-- /home -->
-      <line x1="50" y1="70" x2="50" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="50" y1="70" x2="50" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
       <rect x="6" y="90" width="88" height="52" rx="8" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.5"/>
       <text x="50" y="110" font-size="12" font-weight="700" fill="#075985" text-anchor="middle">/home</text>
       <text x="50" y="126" font-size="8.5" fill="#0284c7" text-anchor="middle">User dirs</text>
-      <text x="50" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">/home/alice</text>
+      <text x="50" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">/home/alice</text>
       <!-- /etc -->
-      <line x1="145" y1="70" x2="145" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="145" y1="70" x2="145" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
       <rect x="101" y="90" width="88" height="52" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
       <text x="145" y="110" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">/etc</text>
       <text x="145" y="126" font-size="8.5" fill="#059669" text-anchor="middle">Config files</text>
-      <text x="145" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">nginx, ssh…</text>
+      <text x="145" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">nginx, ssh…</text>
       <!-- /var -->
-      <line x1="240" y1="70" x2="240" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="240" y1="70" x2="240" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
       <rect x="196" y="90" width="88" height="52" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
       <text x="240" y="110" font-size="12" font-weight="700" fill="#78350f" text-anchor="middle">/var</text>
       <text x="240" y="126" font-size="8.5" fill="#b45309" text-anchor="middle">Variable data</text>
-      <text x="240" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">logs, caches</text>
+      <text x="240" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">logs, caches</text>
       <!-- /usr -->
-      <line x1="335" y1="70" x2="335" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
-      <rect x="291" y="90" width="88" height="52" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
-      <text x="335" y="110" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">/usr</text>
-      <text x="335" y="126" font-size="8.5" fill="#6366f1" text-anchor="middle">User programs</text>
-      <text x="335" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">bin, lib, share</text>
+      <line x1="335" y1="70" x2="335" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
+      <rect x="291" y="90" width="88" height="52" rx="8" fill="#FBDDD0" stroke="#E95420" stroke-width="1.5"/>
+      <text x="335" y="110" font-size="12" font-weight="700" fill="#A33A13" text-anchor="middle">/usr</text>
+      <text x="335" y="126" font-size="8.5" fill="#E95420" text-anchor="middle">User programs</text>
+      <text x="335" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">bin, lib, share</text>
       <!-- /bin -->
-      <line x1="430" y1="70" x2="430" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="430" y1="70" x2="430" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
       <rect x="386" y="90" width="88" height="52" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.5"/>
       <text x="430" y="110" font-size="12" font-weight="700" fill="#831843" text-anchor="middle">/bin</text>
       <text x="430" y="126" font-size="8.5" fill="#db2777" text-anchor="middle">Core binaries</text>
-      <text x="430" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">ls, cp, grep</text>
+      <text x="430" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">ls, cp, grep</text>
       <!-- /tmp -->
-      <line x1="525" y1="70" x2="525" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
-      <rect x="481" y="90" width="88" height="52" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
-      <text x="525" y="110" font-size="12" font-weight="700" fill="#475569" text-anchor="middle">/tmp</text>
-      <text x="525" y="126" font-size="8.5" fill="#64748b" text-anchor="middle">Temp files</text>
-      <text x="525" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">cleared @ reboot</text>
+      <line x1="525" y1="70" x2="525" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
+      <rect x="481" y="90" width="88" height="52" rx="8" fill="#F2F1F0" stroke="#AEA79F" stroke-width="1.5"/>
+      <text x="525" y="110" font-size="12" font-weight="700" fill="#5E5A56" text-anchor="middle">/tmp</text>
+      <text x="525" y="126" font-size="8.5" fill="#7A746E" text-anchor="middle">Temp files</text>
+      <text x="525" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">cleared @ reboot</text>
       <!-- /proc -->
-      <line x1="620" y1="70" x2="620" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="620" y1="70" x2="620" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
       <rect x="576" y="90" width="88" height="52" rx="8" fill="#ffe4e6" stroke="#f43f5e" stroke-width="1.5"/>
       <text x="620" y="110" font-size="12" font-weight="700" fill="#9f1239" text-anchor="middle">/proc</text>
       <text x="620" y="126" font-size="8.5" fill="#e11d48" text-anchor="middle">Virtual: kernel</text>
-      <text x="620" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">live in RAM only</text>
+      <text x="620" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">live in RAM only</text>
       <!-- /dev -->
-      <line x1="690" y1="70" x2="690" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>
-      <rect x="651" y="90" width="83" height="52" rx="8" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1.5"/>
-      <text x="692" y="110" font-size="12" font-weight="700" fill="#5b21b6" text-anchor="middle">/dev</text>
-      <text x="692" y="126" font-size="8.5" fill="#7c3aed" text-anchor="middle">Devices</text>
-      <text x="692" y="137" font-size="8" fill="#94a3b8" text-anchor="middle">disk, tty, null</text>
+      <line x1="690" y1="70" x2="690" y2="90" stroke="#CDCAC6" stroke-width="1.5"/>
+      <rect x="651" y="90" width="83" height="52" rx="8" fill="#F7EEF5" stroke="#A04D92" stroke-width="1.5"/>
+      <text x="692" y="110" font-size="12" font-weight="700" fill="#5E2750" text-anchor="middle">/dev</text>
+      <text x="692" y="126" font-size="8.5" fill="#77216F" text-anchor="middle">Devices</text>
+      <text x="692" y="137" font-size="8" fill="#AEA79F" text-anchor="middle">disk, tty, null</text>
       <!-- ── /var sub-tree ── -->
       <line x1="240" y1="142" x2="240" y2="165" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
       <line x1="205" y1="165" x2="275" y2="165" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>
@@ -790,7 +910,7 @@ rm -rf /tmp/old_data/    <span class="text-zinc-400"># CAREFUL: recursive force 
       <rect x="148" y="180" width="64" height="28" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1"/>
       <text x="180" y="198" font-size="9" font-weight="600" fill="#065f46" text-anchor="middle">/etc/ssh</text>
       <!-- legend note -->
-      <text x="370" y="250" font-size="9.5" fill="#94a3b8" text-anchor="middle">Dashed lines show common subdirectories — every path traces back to  /</text>
+      <text x="370" y="250" font-size="9.5" fill="#AEA79F" text-anchor="middle">Dashed lines show common subdirectories — every path traces back to  /</text>
     </svg>
   </div>
 
@@ -921,8 +1041,8 @@ rm -rf /tmp/old_data/    <span class="text-zinc-400"># CAREFUL: recursive force 
 ════════════════════════════════════════════════════════ -->
 <section id="permissions">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-amber-100 text-amber-700 font-extrabold text-sm shrink-0">3</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">File Permissions &amp; Ownership</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">3</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">File Permissions &amp; Ownership</h2>
   </div>
 
   <div class="prose-content">
@@ -962,15 +1082,15 @@ sudo -i   <span class="text-zinc-400"># open a root shell (use sparingly)</span>
 
   <!-- DIAGRAM PLACEHOLDER -->
   <!-- DIAGRAM 4: Permission String Breakdown -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">How to Read a Linux Permission String</p>
-    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Linux permission string breakdown">
+    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="Linux permission string breakdown">
       <!-- ── Permission string characters ── -->
       <!-- Each char: 52px wide, monospace, large -->
       <!-- Positions: 60,130,178,226,274,322,370,418,466,514 -->
       <!-- File type: position 1 = index 60 -->
       <!-- CHAR BOXES -->
-      <rect x="30"  y="40" width="52" height="52" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+      <rect x="30"  y="40" width="52" height="52" rx="8" fill="#F2F1F0" stroke="#AEA79F" stroke-width="2"/>
       <rect x="90"  y="40" width="52" height="52" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
       <rect x="148" y="40" width="52" height="52" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
       <rect x="206" y="40" width="52" height="52" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
@@ -981,46 +1101,46 @@ sudo -i   <span class="text-zinc-400"># open a root shell (use sparingly)</span>
       <rect x="508" y="40" width="52" height="52" rx="8" fill="#fef9c3" stroke="#fde047" stroke-width="2"/>
       <rect x="566" y="40" width="52" height="52" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
       <!-- CHARACTERS -->
-      <text x="56"  y="77" font-size="26" font-weight="700" font-family="monospace" fill="#475569" text-anchor="middle">-</text>
-      <text x="116" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#1d4ed8" text-anchor="middle">r</text>
-      <text x="174" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#1d4ed8" text-anchor="middle">w</text>
-      <text x="232" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#1d4ed8" text-anchor="middle">x</text>
-      <text x="296" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#059669" text-anchor="middle">r</text>
-      <text x="354" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#6b7280" text-anchor="middle">-</text>
-      <text x="412" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#059669" text-anchor="middle">x</text>
-      <text x="476" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#b45309" text-anchor="middle">r</text>
-      <text x="534" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#6b7280" text-anchor="middle">-</text>
-      <text x="592" y="77" font-size="26" font-weight="700" font-family="monospace" fill="#6b7280" text-anchor="middle">-</text>
+      <text x="56"  y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#5E5A56" text-anchor="middle">-</text>
+      <text x="116" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#1d4ed8" text-anchor="middle">r</text>
+      <text x="174" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#1d4ed8" text-anchor="middle">w</text>
+      <text x="232" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#1d4ed8" text-anchor="middle">x</text>
+      <text x="296" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#059669" text-anchor="middle">r</text>
+      <text x="354" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#6b7280" text-anchor="middle">-</text>
+      <text x="412" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#059669" text-anchor="middle">x</text>
+      <text x="476" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#b45309" text-anchor="middle">r</text>
+      <text x="534" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#6b7280" text-anchor="middle">-</text>
+      <text x="592" y="77" font-size="26" font-weight="700" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#6b7280" text-anchor="middle">-</text>
       <!-- ── Bracket annotations ── -->
       <!-- File type bracket -->
-      <path d="M30 100 L30 115 L82 115 L82 100" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
-      <text x="56" y="130" font-size="9" font-weight="700" fill="#64748b" text-anchor="middle">File Type</text>
-      <text x="56" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">-=file  d=dir</text>
+      <path d="M30 100 L30 115 L82 115 L82 100" fill="none" stroke="#AEA79F" stroke-width="1.5"/>
+      <text x="56" y="130" font-size="9" font-weight="700" fill="#7A746E" text-anchor="middle">File Type</text>
+      <text x="56" y="142" font-size="8.5" fill="#AEA79F" text-anchor="middle">-=file  d=dir</text>
       <!-- Owner bracket -->
       <path d="M90 100 L90 115 L258 115 L258 100" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
       <text x="174" y="130" font-size="9" font-weight="700" fill="#1d4ed8" text-anchor="middle">Owner (rwx)</text>
-      <text x="174" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">Read · Write · Execute</text>
+      <text x="174" y="142" font-size="8.5" fill="#AEA79F" text-anchor="middle">Read · Write · Execute</text>
       <!-- Octal: Owner -->
       <rect x="136" y="155" width="76" height="22" rx="6" fill="#dbeafe"/>
       <text x="174" y="170" font-size="10" font-weight="700" fill="#1e40af" text-anchor="middle">4+2+1 = 7</text>
       <!-- Group bracket -->
       <path d="M270 100 L270 115 L438 115 L438 100" fill="none" stroke="#10b981" stroke-width="1.5"/>
       <text x="354" y="130" font-size="9" font-weight="700" fill="#065f46" text-anchor="middle">Group (r-x)</text>
-      <text x="354" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">Read · No Write · Execute</text>
+      <text x="354" y="142" font-size="8.5" fill="#AEA79F" text-anchor="middle">Read · No Write · Execute</text>
       <!-- Octal: Group -->
       <rect x="316" y="155" width="76" height="22" rx="6" fill="#d1fae5"/>
       <text x="354" y="170" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">4+0+1 = 5</text>
       <!-- Others bracket -->
       <path d="M450 100 L450 115 L618 115 L618 100" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
       <text x="534" y="130" font-size="9" font-weight="700" fill="#92400e" text-anchor="middle">Others (r--)</text>
-      <text x="534" y="142" font-size="8.5" fill="#94a3b8" text-anchor="middle">Read · No Write · No Exec</text>
+      <text x="534" y="142" font-size="8.5" fill="#AEA79F" text-anchor="middle">Read · No Write · No Exec</text>
       <!-- Octal: Others -->
       <rect x="496" y="155" width="76" height="22" rx="6" fill="#fef3c7"/>
       <text x="534" y="170" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">4+0+0 = 4</text>
       <!-- ── Summary row ── -->
-      <rect x="60" y="195" width="560" height="42" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
-      <text x="340" y="212" font-size="10" fill="#64748b" text-anchor="middle" font-weight="600">chmod  <tspan fill="#1d4ed8">7</tspan><tspan fill="#059669">5</tspan><tspan fill="#b45309">4</tspan>  deploy.sh     →   Owner: rwx    Group: r-x    Others: r--</text>
-      <text x="340" y="228" font-size="9" fill="#94a3b8" text-anchor="middle">r = 4 (read)   w = 2 (write)   x = 1 (execute)   - = 0 (none)   Sum each trio to get the octal digit</text>
+      <rect x="60" y="195" width="560" height="42" rx="10" fill="#FAFAFA" stroke="#E6E4E2" stroke-width="1.5"/>
+      <text x="340" y="212" font-size="10" fill="#7A746E" text-anchor="middle" font-weight="600">chmod  <tspan fill="#1d4ed8">7</tspan><tspan fill="#059669">5</tspan><tspan fill="#b45309">4</tspan>  deploy.sh     →   Owner: rwx    Group: r-x    Others: r--</text>
+      <text x="340" y="228" font-size="9" fill="#AEA79F" text-anchor="middle">r = 4 (read)   w = 2 (write)   x = 1 (execute)   - = 0 (none)   Sum each trio to get the octal digit</text>
     </svg>
   </div>
 
@@ -1151,8 +1271,8 @@ sudo -i   <span class="text-zinc-400"># open a root shell (use sparingly)</span>
 ════════════════════════════════════════════════════════ -->
 <section id="processes">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-purple-100 text-purple-700 font-extrabold text-sm shrink-0">4</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Process Management</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">4</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Process Management</h2>
   </div>
 
   <div class="prose-content">
@@ -1201,24 +1321,24 @@ crontab -e          <span class="text-zinc-400"># edit your cron jobs</span>
 
   <!-- DIAGRAM PLACEHOLDER -->
   <!-- DIAGRAM 5: Process Lifecycle State Machine -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Linux Process Lifecycle</p>
-    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Process lifecycle states">
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="Process lifecycle states">
       <defs>
-        <marker id="arrowB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrowB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#E95420"/></marker>
         <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
         <marker id="arrowR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f43f5e"/></marker>
         <marker id="arrowA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/></marker>
       </defs>
       <!-- ── State boxes ── -->
       <!-- CREATED (top-left) -->
-      <rect x="20" y="20" width="110" height="52" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
-      <text x="75" y="42" font-size="11" font-weight="700" fill="#3730a3" text-anchor="middle">CREATED</text>
-      <text x="75" y="57" font-size="8.5" fill="#6366f1" text-anchor="middle">fork() / exec()</text>
+      <rect x="20" y="20" width="110" height="52" rx="10" fill="#FBDDD0" stroke="#E95420" stroke-width="2"/>
+      <text x="75" y="42" font-size="11" font-weight="700" fill="#A33A13" text-anchor="middle">CREATED</text>
+      <text x="75" y="57" font-size="8.5" fill="#E95420" text-anchor="middle">fork() / exec()</text>
       <!-- RUNNING (center) -->
-      <rect x="285" y="110" width="130" height="56" rx="10" fill="#4f46e5" stroke="#6366f1" stroke-width="2"/>
+      <rect x="285" y="110" width="130" height="56" rx="10" fill="#E95420" stroke="#E95420" stroke-width="2"/>
       <text x="350" y="133" font-size="12" font-weight="800" fill="white" text-anchor="middle">RUNNING</text>
-      <text x="350" y="151" font-size="8.5" fill="#c7d2fe" text-anchor="middle">On CPU — doing work</text>
+      <text x="350" y="151" font-size="8.5" fill="#F7BBA3" text-anchor="middle">On CPU — doing work</text>
       <!-- SLEEPING (top-right) -->
       <rect x="560" y="20" width="120" height="52" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
       <text x="620" y="42" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">SLEEPING</text>
@@ -1228,35 +1348,35 @@ crontab -e          <span class="text-zinc-400"># edit your cron jobs</span>
       <text x="75" y="232" font-size="11" font-weight="700" fill="#78350f" text-anchor="middle">STOPPED</text>
       <text x="75" y="247" font-size="8.5" fill="#b45309" text-anchor="middle">SIGSTOP / Ctrl+Z</text>
       <!-- ZOMBIE (bottom-right) -->
-      <rect x="560" y="210" width="120" height="52" rx="10" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="2"/>
-      <text x="620" y="232" font-size="11" font-weight="700" fill="#5b21b6" text-anchor="middle">ZOMBIE</text>
-      <text x="620" y="247" font-size="8.5" fill="#7c3aed" text-anchor="middle">Done, parent not waited</text>
+      <rect x="560" y="210" width="120" height="52" rx="10" fill="#F7EEF5" stroke="#A04D92" stroke-width="2"/>
+      <text x="620" y="232" font-size="11" font-weight="700" fill="#5E2750" text-anchor="middle">ZOMBIE</text>
+      <text x="620" y="247" font-size="8.5" fill="#77216F" text-anchor="middle">Done, parent not waited</text>
       <!-- TERMINATED (bottom-center) -->
       <rect x="275" y="210" width="150" height="52" rx="10" fill="#ffe4e6" stroke="#f43f5e" stroke-width="2"/>
       <text x="350" y="232" font-size="11" font-weight="700" fill="#9f1239" text-anchor="middle">TERMINATED</text>
       <text x="350" y="247" font-size="8.5" fill="#e11d48" text-anchor="middle">SIGTERM / SIGKILL / exit()</text>
       <!-- ── Arrows ── -->
       <!-- CREATED → RUNNING -->
-      <path d="M130 46 Q207 46 285 138" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrowB)"/>
-      <text x="195" y="72" font-size="8.5" fill="#6366f1" transform="rotate(-28,195,72)">scheduled</text>
+      <path d="M130 46 Q207 46 285 138" fill="none" stroke="#E95420" stroke-width="1.8" marker-end="url(#arrowB)"/>
+      <text x="195" y="72" font-size="8.5" fill="#E95420" transform="rotate(-28,195,72)">scheduled</text>
       <!-- RUNNING → SLEEPING -->
       <path d="M415 125 Q490 80 560 46" fill="none" stroke="#10b981" stroke-width="1.8" marker-end="url(#arrowG)"/>
       <text x="500" y="73" font-size="8.5" fill="#059669" transform="rotate(-28,500,73)">I/O wait</text>
       <!-- SLEEPING → RUNNING -->
-      <path d="M560 56 Q490 100 415 128" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowB)"/>
-      <text x="470" y="110" font-size="8" fill="#6366f1">woken up</text>
+      <path d="M560 56 Q490 100 415 128" fill="none" stroke="#E95420" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowB)"/>
+      <text x="470" y="110" font-size="8" fill="#E95420">woken up</text>
       <!-- RUNNING → STOPPED -->
       <path d="M285 140 Q160 140 130 210" fill="none" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arrowA)"/>
       <text x="155" y="165" font-size="8.5" fill="#b45309" transform="rotate(50,155,165)">SIGSTOP</text>
       <!-- STOPPED → RUNNING -->
-      <path d="M130 210 Q215 175 285 148" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowB)"/>
-      <text x="190" y="185" font-size="8" fill="#6366f1">SIGCONT</text>
+      <path d="M130 210 Q215 175 285 148" fill="none" stroke="#E95420" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowB)"/>
+      <text x="190" y="185" font-size="8" fill="#E95420">SIGCONT</text>
       <!-- RUNNING → TERMINATED -->
       <path d="M350 166 L350 210" fill="none" stroke="#f43f5e" stroke-width="1.8" marker-end="url(#arrowR)"/>
       <text x="355" y="196" font-size="8" fill="#e11d48">exit / kill</text>
       <!-- SLEEPING → ZOMBIE (edge case) -->
-      <path d="M620 72 L620 210" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowA)"/>
-      <text x="628" y="155" font-size="8" fill="#7c3aed" transform="rotate(90,628,155)">parent exits</text>
+      <path d="M620 72 L620 210" fill="none" stroke="#A04D92" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowA)"/>
+      <text x="628" y="155" font-size="8" fill="#77216F" transform="rotate(90,628,155)">parent exits</text>
       <!-- ZOMBIE → TERMINATED -->
       <path d="M560 236 L425 236" fill="none" stroke="#f43f5e" stroke-width="1.5" marker-end="url(#arrowR)"/>
       <text x="490" y="229" font-size="8" fill="#e11d48">wait()</text>
@@ -1390,8 +1510,8 @@ crontab -e          <span class="text-zinc-400"># edit your cron jobs</span>
 ════════════════════════════════════════════════════════ -->
 <section id="networking">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-sky-100 text-sky-700 font-extrabold text-sm shrink-0">5</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Networking Essentials</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">5</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Networking Essentials</h2>
   </div>
 
   <div class="prose-content">
@@ -1440,22 +1560,22 @@ sudo ufw allow 443/tcp
 sudo ufw deny 23/tcp</code></pre>
 
   <!-- DIAGRAM 6: Network Request Lifecycle -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">What Happens When You curl https://api.example.com</p>
-    <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Network request lifecycle">
+    <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="Network request lifecycle">
       <defs>
-        <marker id="arrN" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrN" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#E95420"/></marker>
         <marker id="arrNR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
       </defs>
       <!-- STEP 1: Client -->
-      <rect x="10" y="80" width="110" height="70" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+      <rect x="10" y="80" width="110" height="70" rx="12" fill="#FBDDD0" stroke="#E95420" stroke-width="2"/>
       <text x="65" y="108" font-size="20" text-anchor="middle">💻</text>
-      <text x="65" y="128" font-size="11" font-weight="700" fill="#3730a3" text-anchor="middle">Your Machine</text>
-      <text x="65" y="142" font-size="8.5" fill="#6366f1" text-anchor="middle">curl / browser</text>
+      <text x="65" y="128" font-size="11" font-weight="700" fill="#A33A13" text-anchor="middle">Your Machine</text>
+      <text x="65" y="142" font-size="8.5" fill="#E95420" text-anchor="middle">curl / browser</text>
       <!-- arrow 1→2 -->
-      <path d="M120 115 L175 115" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrN)"/>
-      <text x="147" y="108" font-size="8" fill="#64748b" text-anchor="middle">DNS</text>
-      <text x="147" y="128" font-size="8" fill="#94a3b8" text-anchor="middle">port 53</text>
+      <path d="M120 115 L175 115" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrN)"/>
+      <text x="147" y="108" font-size="8" fill="#7A746E" text-anchor="middle">DNS</text>
+      <text x="147" y="128" font-size="8" fill="#AEA79F" text-anchor="middle">port 53</text>
       <!-- STEP 2: DNS Resolver -->
       <rect x="175" y="80" width="120" height="70" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
       <text x="235" y="108" font-size="20" text-anchor="middle">🌐</text>
@@ -1465,20 +1585,20 @@ sudo ufw deny 23/tcp</code></pre>
       <path d="M175 125 L120 125" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrNR)"/>
       <text x="147" y="140" font-size="8" fill="#10b981" text-anchor="middle">IP: 93.184.x.x</text>
       <!-- arrow 2→3 -->
-      <path d="M295 115 L355 115" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrN)"/>
-      <text x="325" y="108" font-size="8" fill="#64748b" text-anchor="middle">TCP</text>
-      <text x="325" y="128" font-size="8" fill="#94a3b8" text-anchor="middle">port 443</text>
+      <path d="M295 115 L355 115" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrN)"/>
+      <text x="325" y="108" font-size="8" fill="#7A746E" text-anchor="middle">TCP</text>
+      <text x="325" y="128" font-size="8" fill="#AEA79F" text-anchor="middle">port 443</text>
       <!-- STEP 3: TLS Handshake -->
       <rect x="355" y="65" width="130" height="100" rx="12" fill="#f0fdf4" stroke="#10b981" stroke-width="2"/>
       <text x="420" y="95" font-size="20" text-anchor="middle">🔒</text>
       <text x="420" y="116" font-size="11" font-weight="700" fill="#14532d" text-anchor="middle">TLS Handshake</text>
       <text x="420" y="131" font-size="8.5" fill="#16a34a" text-anchor="middle">SYN → SYN-ACK → ACK</text>
       <text x="420" y="145" font-size="8.5" fill="#16a34a" text-anchor="middle">Certificate verify</text>
-      <text x="420" y="158" font-size="8" fill="#94a3b8" text-anchor="middle">~3 round trips</text>
+      <text x="420" y="158" font-size="8" fill="#AEA79F" text-anchor="middle">~3 round trips</text>
       <!-- arrow 3→4 -->
-      <path d="M485 115 L545 115" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrN)"/>
-      <text x="515" y="108" font-size="8" fill="#64748b" text-anchor="middle">HTTPS</text>
-      <text x="515" y="128" font-size="8" fill="#94a3b8" text-anchor="middle">GET /status</text>
+      <path d="M485 115 L545 115" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrN)"/>
+      <text x="515" y="108" font-size="8" fill="#7A746E" text-anchor="middle">HTTPS</text>
+      <text x="515" y="128" font-size="8" fill="#AEA79F" text-anchor="middle">GET /status</text>
       <!-- STEP 4: Server -->
       <rect x="545" y="80" width="120" height="70" rx="12" fill="#ffe4e6" stroke="#f43f5e" stroke-width="2"/>
       <text x="605" y="108" font-size="20" text-anchor="middle">🖥️</text>
@@ -1488,21 +1608,21 @@ sudo ufw deny 23/tcp</code></pre>
       <path d="M545 125 L485 125" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrNR)"/>
       <text x="515" y="140" font-size="8" fill="#10b981" text-anchor="middle">200 OK + body</text>
       <!-- ── Bottom timeline labels ── -->
-      <line x1="10" y1="175" x2="665" y2="175" stroke="#e2e8f0" stroke-width="1.5"/>
-      <circle cx="65"  cy="175" r="4" fill="#6366f1"/>
+      <line x1="10" y1="175" x2="665" y2="175" stroke="#E6E4E2" stroke-width="1.5"/>
+      <circle cx="65"  cy="175" r="4" fill="#E95420"/>
       <circle cx="235" cy="175" r="4" fill="#f59e0b"/>
       <circle cx="420" cy="175" r="4" fill="#10b981"/>
       <circle cx="605" cy="175" r="4" fill="#f43f5e"/>
-      <text x="65"  y="192" font-size="8.5" fill="#64748b" text-anchor="middle">① Lookup</text>
-      <text x="65"  y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">api.example.com→IP</text>
-      <text x="235" y="192" font-size="8.5" fill="#64748b" text-anchor="middle">② Resolve</text>
-      <text x="235" y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">Cached or recursive</text>
-      <text x="420" y="192" font-size="8.5" fill="#64748b" text-anchor="middle">③ Encrypt</text>
-      <text x="420" y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">TLS 1.3 handshake</text>
-      <text x="605" y="192" font-size="8.5" fill="#64748b" text-anchor="middle">④ Respond</text>
-      <text x="605" y="203" font-size="8"   fill="#94a3b8" text-anchor="middle">App handles request</text>
+      <text x="65"  y="192" font-size="8.5" fill="#7A746E" text-anchor="middle">① Lookup</text>
+      <text x="65"  y="203" font-size="8"   fill="#AEA79F" text-anchor="middle">api.example.com→IP</text>
+      <text x="235" y="192" font-size="8.5" fill="#7A746E" text-anchor="middle">② Resolve</text>
+      <text x="235" y="203" font-size="8"   fill="#AEA79F" text-anchor="middle">Cached or recursive</text>
+      <text x="420" y="192" font-size="8.5" fill="#7A746E" text-anchor="middle">③ Encrypt</text>
+      <text x="420" y="203" font-size="8"   fill="#AEA79F" text-anchor="middle">TLS 1.3 handshake</text>
+      <text x="605" y="192" font-size="8.5" fill="#7A746E" text-anchor="middle">④ Respond</text>
+      <text x="605" y="203" font-size="8"   fill="#AEA79F" text-anchor="middle">App handles request</text>
       <!-- total time note -->
-      <text x="360" y="222" font-size="8.5" fill="#94a3b8" text-anchor="middle">Typical total round-trip: 20–200 ms depending on geography and caching</text>
+      <text x="360" y="222" font-size="8.5" fill="#AEA79F" text-anchor="middle">Typical total round-trip: 20–200 ms depending on geography and caching</text>
     </svg>
   </div>
 
@@ -1632,8 +1752,8 @@ sudo ufw deny 23/tcp</code></pre>
 ════════════════════════════════════════════════════════ -->
 <section id="monitoring">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-rose-100 text-rose-700 font-extrabold text-sm shrink-0">6</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">System Monitoring &amp; Performance</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">6</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">System Monitoring &amp; Performance</h2>
   </div>
 
   <div class="prose-content">
@@ -1680,29 +1800,29 @@ dmesg -T | grep -i oom    <span class="text-zinc-400"># find OOM killer events</
   </div>
 
   <!-- DIAGRAM 7: SRE Monitoring Dashboard -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-900 p-5">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-slate-900 p-5">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Live System Dashboard — prod-web-01</p>
-    <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="SRE monitoring dashboard">
+    <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="SRE monitoring dashboard">
       <!-- ── CPU gauge (top-left) ── -->
-      <rect x="10" y="10" width="155" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-      <text x="87" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">CPU USAGE</text>
+      <rect x="10" y="10" width="155" height="115" rx="10" fill="#3D1233" stroke="#5E2750" stroke-width="1"/>
+      <text x="87" y="30" font-size="9" font-weight="600" fill="#AEA79F" text-anchor="middle">CPU USAGE</text>
       <!-- semicircle gauge track -->
-      <path d="M37 88 A50 50 0 0 1 137 88" fill="none" stroke="#334155" stroke-width="10" stroke-linecap="round"/>
+      <path d="M37 88 A50 50 0 0 1 137 88" fill="none" stroke="#5E2750" stroke-width="10" stroke-linecap="round"/>
       <!-- filled portion: 68% of π = 68% of 180° -->
       <path d="M37 88 A50 50 0 0 1 115 55" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
       <text x="87" y="85" font-size="20" font-weight="800" fill="#f59e0b" text-anchor="middle">68%</text>
-      <text x="87" y="103" font-size="8.5" fill="#64748b" text-anchor="middle">4 cores · 2.4 GHz</text>
-      <text x="40" y="103" font-size="8" fill="#64748b">0%</text>
-      <text x="124" y="103" font-size="8" fill="#64748b">100%</text>
+      <text x="87" y="103" font-size="8.5" fill="#7A746E" text-anchor="middle">4 cores · 2.4 GHz</text>
+      <text x="40" y="103" font-size="8" fill="#7A746E">0%</text>
+      <text x="124" y="103" font-size="8" fill="#7A746E">100%</text>
       <!-- alert threshold line label -->
       <text x="87" y="118" font-size="8" fill="#fbbf24" text-anchor="middle">▲ warn at 80%</text>
       <!-- ── MEMORY bar (top-center-left) ── -->
-      <rect x="175" y="10" width="155" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-      <text x="252" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">MEMORY (RAM)</text>
+      <rect x="175" y="10" width="155" height="115" rx="10" fill="#3D1233" stroke="#5E2750" stroke-width="1"/>
+      <text x="252" y="30" font-size="9" font-weight="600" fill="#AEA79F" text-anchor="middle">MEMORY (RAM)</text>
       <text x="252" y="55" font-size="22" font-weight="800" fill="#60a5fa" text-anchor="middle">5.8 GB</text>
-      <text x="252" y="72" font-size="8.5" fill="#64748b" text-anchor="middle">of 8 GB total</text>
+      <text x="252" y="72" font-size="8.5" fill="#7A746E" text-anchor="middle">of 8 GB total</text>
       <!-- bar track -->
-      <rect x="195" y="82" width="115" height="12" rx="6" fill="#334155"/>
+      <rect x="195" y="82" width="115" height="12" rx="6" fill="#5E2750"/>
       <!-- fill 72% -->
       <rect x="195" y="82" width="83" height="12" rx="6" fill="#60a5fa"/>
       <!-- threshold mark -->
@@ -1710,53 +1830,53 @@ dmesg -T | grep -i oom    <span class="text-zinc-400"># find OOM killer events</
       <text x="287" y="110" font-size="7.5" fill="#f43f5e" text-anchor="middle">85% alert</text>
       <text x="252" y="118" font-size="8.5" fill="#60a5fa" text-anchor="middle">72% used</text>
       <!-- ── DISK bar (top-center-right) ── -->
-      <rect x="340" y="10" width="155" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-      <text x="417" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">DISK  /var</text>
+      <rect x="340" y="10" width="155" height="115" rx="10" fill="#3D1233" stroke="#5E2750" stroke-width="1"/>
+      <text x="417" y="30" font-size="9" font-weight="600" fill="#AEA79F" text-anchor="middle">DISK  /var</text>
       <text x="417" y="55" font-size="22" font-weight="800" fill="#34d399" text-anchor="middle">41 GB</text>
-      <text x="417" y="72" font-size="8.5" fill="#64748b" text-anchor="middle">of 100 GB</text>
-      <rect x="360" y="82" width="115" height="12" rx="6" fill="#334155"/>
+      <text x="417" y="72" font-size="8.5" fill="#7A746E" text-anchor="middle">of 100 GB</text>
+      <rect x="360" y="82" width="115" height="12" rx="6" fill="#5E2750"/>
       <rect x="360" y="82" width="47" height="12" rx="6" fill="#34d399"/>
       <line x1="452" y1="79" x2="452" y2="98" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="2,1"/>
       <text x="452" y="110" font-size="7.5" fill="#f43f5e" text-anchor="middle">80% alert</text>
       <text x="417" y="118" font-size="8.5" fill="#34d399" text-anchor="middle">41% used · OK</text>
       <!-- ── LOAD AVERAGE card (top-right) ── -->
-      <rect x="505" y="10" width="185" height="115" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-      <text x="597" y="30" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">LOAD AVERAGE</text>
-      <text x="545" y="58" font-size="10" fill="#64748b" text-anchor="middle">1 min</text>
-      <text x="597" y="58" font-size="10" fill="#64748b" text-anchor="middle">5 min</text>
-      <text x="649" y="58" font-size="10" fill="#64748b" text-anchor="middle">15 min</text>
-      <text x="545" y="78" font-size="18" font-weight="800" fill="#a78bfa" text-anchor="middle">1.4</text>
-      <text x="597" y="78" font-size="18" font-weight="800" fill="#a78bfa" text-anchor="middle">1.8</text>
-      <text x="649" y="78" font-size="18" font-weight="800" fill="#64748b" text-anchor="middle">2.1</text>
-      <text x="597" y="97" font-size="8.5" fill="#64748b" text-anchor="middle">4 CPUs — threshold: 4.0</text>
-      <rect x="515" y="103" width="164" height="14" rx="4" fill="#0f172a"/>
-      <rect x="515" y="103" width="65" height="14" rx="4" fill="#a78bfa" opacity="0.4"/>
-      <text x="597" y="114" font-size="7.5" fill="#a78bfa" text-anchor="middle">45% of capacity</text>
+      <rect x="505" y="10" width="185" height="115" rx="10" fill="#3D1233" stroke="#5E2750" stroke-width="1"/>
+      <text x="597" y="30" font-size="9" font-weight="600" fill="#AEA79F" text-anchor="middle">LOAD AVERAGE</text>
+      <text x="545" y="58" font-size="10" fill="#7A746E" text-anchor="middle">1 min</text>
+      <text x="597" y="58" font-size="10" fill="#7A746E" text-anchor="middle">5 min</text>
+      <text x="649" y="58" font-size="10" fill="#7A746E" text-anchor="middle">15 min</text>
+      <text x="545" y="78" font-size="18" font-weight="800" fill="#C27FB6" text-anchor="middle">1.4</text>
+      <text x="597" y="78" font-size="18" font-weight="800" fill="#C27FB6" text-anchor="middle">1.8</text>
+      <text x="649" y="78" font-size="18" font-weight="800" fill="#7A746E" text-anchor="middle">2.1</text>
+      <text x="597" y="97" font-size="8.5" fill="#7A746E" text-anchor="middle">4 CPUs — threshold: 4.0</text>
+      <rect x="515" y="103" width="164" height="14" rx="4" fill="#300A24"/>
+      <rect x="515" y="103" width="65" height="14" rx="4" fill="#C27FB6" opacity="0.4"/>
+      <text x="597" y="114" font-size="7.5" fill="#C27FB6" text-anchor="middle">45% of capacity</text>
       <!-- ── LOAD TREND sparkline (bottom) ── -->
-      <rect x="10" y="140" width="680" height="120" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-      <text x="350" y="160" font-size="9" font-weight="600" fill="#94a3b8" text-anchor="middle">LOAD AVERAGE TREND  (last 30 minutes)</text>
+      <rect x="10" y="140" width="680" height="120" rx="10" fill="#3D1233" stroke="#5E2750" stroke-width="1"/>
+      <text x="350" y="160" font-size="9" font-weight="600" fill="#AEA79F" text-anchor="middle">LOAD AVERAGE TREND  (last 30 minutes)</text>
       <!-- grid lines -->
-      <line x1="30" y1="172" x2="670" y2="172" stroke="#334155" stroke-width="0.5"/>
-      <line x1="30" y1="190" x2="670" y2="190" stroke="#334155" stroke-width="0.5"/>
-      <line x1="30" y1="208" x2="670" y2="208" stroke="#334155" stroke-width="0.5"/>
-      <text x="25" y="175" font-size="7" fill="#475569" text-anchor="end">4.0</text>
-      <text x="25" y="193" font-size="7" fill="#475569" text-anchor="end">2.0</text>
-      <text x="25" y="211" font-size="7" fill="#475569" text-anchor="end">0</text>
+      <line x1="30" y1="172" x2="670" y2="172" stroke="#5E2750" stroke-width="0.5"/>
+      <line x1="30" y1="190" x2="670" y2="190" stroke="#5E2750" stroke-width="0.5"/>
+      <line x1="30" y1="208" x2="670" y2="208" stroke="#5E2750" stroke-width="0.5"/>
+      <text x="25" y="175" font-size="7" fill="#5E5A56" text-anchor="end">4.0</text>
+      <text x="25" y="193" font-size="7" fill="#5E5A56" text-anchor="end">2.0</text>
+      <text x="25" y="211" font-size="7" fill="#5E5A56" text-anchor="end">0</text>
       <!-- alert threshold -->
       <line x1="30" y1="172" x2="670" y2="172" stroke="#f43f5e" stroke-width="1" stroke-dasharray="6,3" opacity="0.7"/>
       <text x="655" y="169" font-size="7" fill="#f43f5e">ALERT</text>
       <!-- Sparkline path (simulated load data) -->
-      <polyline points="30,207 55,206 80,204 105,202 130,200 155,199 180,197 205,196 230,194 255,200 280,204 305,207 330,205 355,202 380,198 405,196 430,194 455,196 480,199 505,200 530,202 555,200 580,198 605,196 630,193 655,192 670,191" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linejoin="round"/>
+      <polyline points="30,207 55,206 80,204 105,202 130,200 155,199 180,197 205,196 230,194 255,200 280,204 305,207 330,205 355,202 380,198 405,196 430,194 455,196 480,199 505,200 530,202 555,200 580,198 605,196 630,193 655,192 670,191" fill="none" stroke="#C27FB6" stroke-width="2.5" stroke-linejoin="round"/>
       <!-- area fill under sparkline -->
-      <polygon points="30,207 55,206 80,204 105,202 130,200 155,199 180,197 205,196 230,194 255,200 280,204 305,207 330,205 355,202 380,198 405,196 430,194 455,196 480,199 505,200 530,202 555,200 580,198 605,196 630,193 655,192 670,191 670,208 30,208" fill="#a78bfa" opacity="0.1"/>
+      <polygon points="30,207 55,206 80,204 105,202 130,200 155,199 180,197 205,196 230,194 255,200 280,204 305,207 330,205 355,202 380,198 405,196 430,194 455,196 480,199 505,200 530,202 555,200 580,198 605,196 630,193 655,192 670,191 670,208 30,208" fill="#C27FB6" opacity="0.1"/>
       <!-- time labels -->
-      <text x="30"  y="222" font-size="7" fill="#475569" text-anchor="middle">-30m</text>
-      <text x="190" y="222" font-size="7" fill="#475569" text-anchor="middle">-20m</text>
-      <text x="350" y="222" font-size="7" fill="#475569" text-anchor="middle">-15m</text>
-      <text x="510" y="222" font-size="7" fill="#475569" text-anchor="middle">-10m</text>
-      <text x="670" y="222" font-size="7" fill="#475569" text-anchor="middle">now</text>
+      <text x="30"  y="222" font-size="7" fill="#5E5A56" text-anchor="middle">-30m</text>
+      <text x="190" y="222" font-size="7" fill="#5E5A56" text-anchor="middle">-20m</text>
+      <text x="350" y="222" font-size="7" fill="#5E5A56" text-anchor="middle">-15m</text>
+      <text x="510" y="222" font-size="7" fill="#5E5A56" text-anchor="middle">-10m</text>
+      <text x="670" y="222" font-size="7" fill="#5E5A56" text-anchor="middle">now</text>
       <!-- uptime badge -->
-      <rect x="565" y="228" width="115" height="22" rx="6" fill="#0f172a" stroke="#334155"/>
+      <rect x="565" y="228" width="115" height="22" rx="6" fill="#300A24" stroke="#5E2750"/>
       <text x="622" y="243" font-size="8.5" fill="#34d399" text-anchor="middle">✓ uptime: 47 days</text>
     </svg>
   </div>
@@ -1887,8 +2007,8 @@ dmesg -T | grep -i oom    <span class="text-zinc-400"># find OOM killer events</
 ════════════════════════════════════════════════════════ -->
 <section id="logs">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-teal-100 text-teal-700 font-extrabold text-sm shrink-0">7</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Log Management &amp; Analysis</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">7</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Log Management &amp; Analysis</h2>
   </div>
 
   <div class="prose-content">
@@ -1931,62 +2051,62 @@ journalctl -p err -n 50           <span class="text-zinc-400"># last 50 error-le
 journalctl --since "2024-01-15 14:00" --until "2024-01-15 15:00"</code></pre>
 
   <!-- DIAGRAM 8: Log Pipeline -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">From Application Event to On-Call Alert</p>
-    <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Log pipeline flow">
+    <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="Log pipeline flow">
       <defs>
-        <marker id="arrLog" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrLog" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#E95420"/></marker>
       </defs>
       <!-- Step 1: Application -->
-      <rect x="8" y="50" width="108" height="80" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+      <rect x="8" y="50" width="108" height="80" rx="12" fill="#FBDDD0" stroke="#E95420" stroke-width="1.5"/>
       <text x="62" y="82" font-size="20" text-anchor="middle">🖥️</text>
-      <text x="62" y="101" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Application</text>
-      <text x="62" y="116" font-size="8" fill="#6366f1" text-anchor="middle">nginx / app / sshd</text>
-      <text x="62" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">emits log lines</text>
+      <text x="62" y="101" font-size="10" font-weight="700" fill="#A33A13" text-anchor="middle">Application</text>
+      <text x="62" y="116" font-size="8" fill="#E95420" text-anchor="middle">nginx / app / sshd</text>
+      <text x="62" y="128" font-size="7.5" fill="#AEA79F" text-anchor="middle">emits log lines</text>
       <!-- arrow -->
-      <path d="M116 90 L148 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
-      <text x="132" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">write()</text>
+      <path d="M116 90 L148 90" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="132" y="84" font-size="7.5" fill="#AEA79F" text-anchor="middle">write()</text>
       <!-- Step 2: /var/log -->
       <rect x="148" y="50" width="112" height="80" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
       <text x="204" y="82" font-size="20" text-anchor="middle">📂</text>
       <text x="204" y="101" font-size="10" font-weight="700" fill="#78350f" text-anchor="middle">/var/log</text>
       <text x="204" y="116" font-size="8" fill="#b45309" text-anchor="middle">app.log</text>
-      <text x="204" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">grows over time</text>
+      <text x="204" y="128" font-size="7.5" fill="#AEA79F" text-anchor="middle">grows over time</text>
       <!-- arrow -->
-      <path d="M260 90 L292 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
-      <text x="276" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">rotate</text>
+      <path d="M260 90 L292 90" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="276" y="84" font-size="7.5" fill="#AEA79F" text-anchor="middle">rotate</text>
       <!-- Step 3: logrotate -->
       <rect x="292" y="50" width="112" height="80" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
       <text x="348" y="82" font-size="20" text-anchor="middle">🔄</text>
       <text x="348" y="101" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">logrotate</text>
       <text x="348" y="116" font-size="8" fill="#059669" text-anchor="middle">compress &amp; archive</text>
-      <text x="348" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">app.log.1.gz</text>
+      <text x="348" y="128" font-size="7.5" fill="#AEA79F" text-anchor="middle">app.log.1.gz</text>
       <!-- arrow -->
-      <path d="M404 90 L436 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
-      <text x="420" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">ship</text>
+      <path d="M404 90 L436 90" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="420" y="84" font-size="7.5" fill="#AEA79F" text-anchor="middle">ship</text>
       <!-- Step 4: Log Aggregator -->
-      <rect x="436" y="50" width="112" height="80" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+      <rect x="436" y="50" width="112" height="80" rx="12" fill="#FBDDD0" stroke="#E95420" stroke-width="1.5"/>
       <text x="492" y="82" font-size="20" text-anchor="middle">📊</text>
-      <text x="492" y="101" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Aggregator</text>
-      <text x="492" y="116" font-size="8" fill="#6366f1" text-anchor="middle">Loki / ELK / Splunk</text>
-      <text x="492" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">index &amp; query</text>
+      <text x="492" y="101" font-size="10" font-weight="700" fill="#A33A13" text-anchor="middle">Aggregator</text>
+      <text x="492" y="116" font-size="8" fill="#E95420" text-anchor="middle">Loki / ELK / Splunk</text>
+      <text x="492" y="128" font-size="7.5" fill="#AEA79F" text-anchor="middle">index &amp; query</text>
       <!-- arrow -->
-      <path d="M548 90 L580 90" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrLog)"/>
-      <text x="564" y="84" font-size="7.5" fill="#94a3b8" text-anchor="middle">match</text>
+      <path d="M548 90 L580 90" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrLog)"/>
+      <text x="564" y="84" font-size="7.5" fill="#AEA79F" text-anchor="middle">match</text>
       <!-- Step 5: Alert Manager -->
       <rect x="580" y="50" width="132" height="80" rx="12" fill="#ffe4e6" stroke="#f43f5e" stroke-width="1.5"/>
       <text x="646" y="82" font-size="20" text-anchor="middle">🚨</text>
       <text x="646" y="101" font-size="10" font-weight="700" fill="#9f1239" text-anchor="middle">Alert Manager</text>
       <text x="646" y="116" font-size="8" fill="#e11d48" text-anchor="middle">PagerDuty / OpsGenie</text>
-      <text x="646" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">page on-call SRE 📱</text>
+      <text x="646" y="128" font-size="7.5" fill="#AEA79F" text-anchor="middle">page on-call SRE 📱</text>
       <!-- ── bottom command examples ── -->
-      <rect x="8" y="148" width="705" height="34" rx="8" fill="#0f172a"/>
-      <text x="20" y="162" font-size="8.5" font-family="monospace" fill="#94a3b8">$</text>
-      <text x="30" y="162" font-size="8.5" font-family="monospace" fill="#e2e8f0">tail -f /var/log/nginx/access.log</text>
-      <text x="255" y="162" font-size="8.5" font-family="monospace" fill="#64748b">|</text>
-      <text x="263" y="162" font-size="8.5" font-family="monospace" fill="#e2e8f0">grep <tspan fill="#fbbf24">"500"</tspan></text>
-      <text x="20" y="175" font-size="8.5" font-family="monospace" fill="#94a3b8">$</text>
-      <text x="30" y="175" font-size="8.5" font-family="monospace" fill="#e2e8f0">journalctl -u nginx --since <tspan fill="#fbbf24">"10 min ago"</tspan> -p err</text>
+      <rect x="8" y="148" width="705" height="34" rx="8" fill="#300A24"/>
+      <text x="20" y="162" font-size="8.5" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#AEA79F">$</text>
+      <text x="30" y="162" font-size="8.5" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">tail -f /var/log/nginx/access.log</text>
+      <text x="255" y="162" font-size="8.5" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#7A746E">|</text>
+      <text x="263" y="162" font-size="8.5" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">grep <tspan fill="#fbbf24">"500"</tspan></text>
+      <text x="20" y="175" font-size="8.5" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#AEA79F">$</text>
+      <text x="30" y="175" font-size="8.5" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E6E4E2">journalctl -u nginx --since <tspan fill="#fbbf24">"10 min ago"</tspan> -p err</text>
     </svg>
   </div>
 
@@ -2116,8 +2236,8 @@ journalctl --since "2024-01-15 14:00" --until "2024-01-15 15:00"</code></pre>
 ════════════════════════════════════════════════════════ -->
 <section id="scripting">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-violet-100 text-violet-700 font-extrabold text-sm shrink-0">8</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Shell Scripting for SRE</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">8</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Shell Scripting for SRE</h2>
   </div>
 
   <div class="prose-content">
@@ -2174,71 +2294,71 @@ trap "echo 'Interrupted!'; exit 1" INT  <span class="text-zinc-400"># handle Ctr
 ./noisy_cmd.sh 2&gt;/dev/null       <span class="text-zinc-400"># discard stderr</span></code></pre>
 
   <!-- DIAGRAM 9: Shell Script Control Flow -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Anatomy of a Production-Safe Bash Script</p>
-    <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="Shell script control flow">
+    <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-2xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="Shell script control flow">
       <defs>
-        <marker id="arrSh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrSh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#E95420"/></marker>
         <marker id="arrShR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f43f5e"/></marker>
       </defs>
       <!-- ── COLUMN 1: The script blocks (left) ── -->
       <!-- 1: Shebang -->
-      <rect x="40" y="12" width="230" height="42" rx="9" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-      <text x="60" y="30" font-size="10" font-family="monospace" fill="#94a3b8">#!/usr/bin/env</text>
-      <text x="180" y="30" font-size="10" font-family="monospace" fill="#60a5fa">bash</text>
-      <text x="155" y="46" font-size="8" fill="#64748b" text-anchor="middle">Shebang — tells OS which interpreter to use</text>
+      <rect x="40" y="12" width="230" height="42" rx="9" fill="#300A24" stroke="#5E2750" stroke-width="1.5"/>
+      <text x="60" y="30" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#AEA79F">#!/usr/bin/env</text>
+      <text x="180" y="30" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#60a5fa">bash</text>
+      <text x="155" y="46" font-size="8" fill="#7A746E" text-anchor="middle">Shebang — tells OS which interpreter to use</text>
       <!-- arrow down -->
-      <path d="M155 54 L155 70" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <path d="M155 54 L155 70" fill="none" stroke="#E95420" stroke-width="1.8" marker-end="url(#arrSh)"/>
       <!-- 2: set -euo pipefail -->
-      <rect x="40" y="70" width="230" height="42" rx="9" fill="#1e293b" stroke="#6366f1" stroke-width="1.5"/>
-      <text x="155" y="88" font-size="10" font-family="monospace" fill="#a5b4fc" text-anchor="middle">set -euo pipefail</text>
-      <text x="155" y="104" font-size="8" fill="#64748b" text-anchor="middle">Strict mode — fail fast on any error</text>
+      <rect x="40" y="70" width="230" height="42" rx="9" fill="#3D1233" stroke="#E95420" stroke-width="1.5"/>
+      <text x="155" y="88" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#F29470" text-anchor="middle">set -euo pipefail</text>
+      <text x="155" y="104" font-size="8" fill="#7A746E" text-anchor="middle">Strict mode — fail fast on any error</text>
       <!-- arrow down -->
-      <path d="M155 112 L155 128" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <path d="M155 112 L155 128" fill="none" stroke="#E95420" stroke-width="1.8" marker-end="url(#arrSh)"/>
       <!-- 3: Variables -->
-      <rect x="40" y="128" width="230" height="42" rx="9" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-      <text x="155" y="146" font-size="10" font-family="monospace" fill="#fbbf24" text-anchor="middle">SERVER="prod-01"</text>
-      <text x="155" y="162" font-size="8" fill="#64748b" text-anchor="middle">Constants &amp; configuration at the top</text>
+      <rect x="40" y="128" width="230" height="42" rx="9" fill="#300A24" stroke="#5E2750" stroke-width="1.5"/>
+      <text x="155" y="146" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#fbbf24" text-anchor="middle">SERVER="prod-01"</text>
+      <text x="155" y="162" font-size="8" fill="#7A746E" text-anchor="middle">Constants &amp; configuration at the top</text>
       <!-- arrow down -->
-      <path d="M155 170 L155 186" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <path d="M155 170 L155 186" fill="none" stroke="#E95420" stroke-width="1.8" marker-end="url(#arrSh)"/>
       <!-- 4: trap cleanup EXIT -->
-      <rect x="40" y="186" width="230" height="42" rx="9" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
-      <text x="155" y="204" font-size="10" font-family="monospace" fill="#c4b5fd" text-anchor="middle">trap cleanup EXIT</text>
-      <text x="155" y="220" font-size="8" fill="#64748b" text-anchor="middle">Register cleanup — runs on any exit</text>
+      <rect x="40" y="186" width="230" height="42" rx="9" fill="#3D1233" stroke="#A04D92" stroke-width="1.5"/>
+      <text x="155" y="204" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#c4b5fd" text-anchor="middle">trap cleanup EXIT</text>
+      <text x="155" y="220" font-size="8" fill="#7A746E" text-anchor="middle">Register cleanup — runs on any exit</text>
       <!-- arrow down -->
-      <path d="M155 228 L155 244" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSh)"/>
+      <path d="M155 228 L155 244" fill="none" stroke="#E95420" stroke-width="1.8" marker-end="url(#arrSh)"/>
       <!-- 5: Main Logic (diamond-ish) -->
-      <rect x="40" y="244" width="230" height="58" rx="9" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
-      <text x="155" y="264" font-size="10" font-family="monospace" fill="#34d399" text-anchor="middle">if / for / while</text>
-      <text x="155" y="280" font-size="8.5" fill="#94a3b8" text-anchor="middle">Main business logic</text>
-      <text x="155" y="293" font-size="8" fill="#64748b" text-anchor="middle">core script work happens here</text>
+      <rect x="40" y="244" width="230" height="58" rx="9" fill="#3D1233" stroke="#10b981" stroke-width="1.5"/>
+      <text x="155" y="264" font-size="10" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#34d399" text-anchor="middle">if / for / while</text>
+      <text x="155" y="280" font-size="8.5" fill="#AEA79F" text-anchor="middle">Main business logic</text>
+      <text x="155" y="293" font-size="8" fill="#7A746E" text-anchor="middle">core script work happens here</text>
       <!-- ── COLUMN 2: explanations (right) ── -->
       <!-- Shebang note -->
-      <line x1="270" y1="33" x2="330" y2="33" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
-      <rect x="330" y="14" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-      <text x="345" y="31" font-size="9" fill="#475569">Always use <tspan font-family="monospace" fill="#4f46e5">#!/usr/bin/env bash</tspan></text>
-      <text x="345" y="44" font-size="8" fill="#94a3b8">Finds bash in $PATH — portable across systems</text>
+      <line x1="270" y1="33" x2="330" y2="33" stroke="#5E2750" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="14" width="320" height="38" rx="8" fill="#FAFAFA" stroke="#E6E4E2" stroke-width="1"/>
+      <text x="345" y="31" font-size="9" fill="#5E5A56">Always use <tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E95420">#!/usr/bin/env bash</tspan></text>
+      <text x="345" y="44" font-size="8" fill="#AEA79F">Finds bash in $PATH — portable across systems</text>
       <!-- set note -->
-      <line x1="270" y1="91" x2="330" y2="91" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
-      <rect x="330" y="72" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-      <text x="345" y="89" font-size="9" fill="#475569"><tspan font-family="monospace" fill="#4f46e5">-e</tspan> exit on error · <tspan font-family="monospace" fill="#4f46e5">-u</tspan> no unset vars · <tspan font-family="monospace" fill="#4f46e5">-o pipefail</tspan></text>
-      <text x="345" y="102" font-size="8" fill="#94a3b8">The "strict mode" triple — prevents silent failures</text>
+      <line x1="270" y1="91" x2="330" y2="91" stroke="#5E2750" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="72" width="320" height="38" rx="8" fill="#FAFAFA" stroke="#E6E4E2" stroke-width="1"/>
+      <text x="345" y="89" font-size="9" fill="#5E5A56"><tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E95420">-e</tspan> exit on error · <tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E95420">-u</tspan> no unset vars · <tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E95420">-o pipefail</tspan></text>
+      <text x="345" y="102" font-size="8" fill="#AEA79F">The "strict mode" triple — prevents silent failures</text>
       <!-- variables note -->
-      <line x1="270" y1="149" x2="330" y2="149" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
-      <rect x="330" y="130" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-      <text x="345" y="147" font-size="9" fill="#475569">Quote variables: <tspan font-family="monospace" fill="#4f46e5">"$VAR"</tspan> not <tspan font-family="monospace" fill="#f43f5e">$VAR</tspan></text>
-      <text x="345" y="160" font-size="8" fill="#94a3b8">Prevents word-splitting on spaces — a classic bug</text>
+      <line x1="270" y1="149" x2="330" y2="149" stroke="#5E2750" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="130" width="320" height="38" rx="8" fill="#FAFAFA" stroke="#E6E4E2" stroke-width="1"/>
+      <text x="345" y="147" font-size="9" fill="#5E5A56">Quote variables: <tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E95420">"$VAR"</tspan> not <tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#f43f5e">$VAR</tspan></text>
+      <text x="345" y="160" font-size="8" fill="#AEA79F">Prevents word-splitting on spaces — a classic bug</text>
       <!-- trap note -->
-      <line x1="270" y1="207" x2="330" y2="207" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
-      <rect x="330" y="188" width="320" height="38" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-      <text x="345" y="205" font-size="9" fill="#475569"><tspan font-family="monospace" fill="#4f46e5">trap "rm -f /tmp/lock" EXIT</tspan></text>
-      <text x="345" y="218" font-size="8" fill="#94a3b8">Cleanup runs even if the script errors or is killed</text>
+      <line x1="270" y1="207" x2="330" y2="207" stroke="#5E2750" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="188" width="320" height="38" rx="8" fill="#FAFAFA" stroke="#E6E4E2" stroke-width="1"/>
+      <text x="345" y="205" font-size="9" fill="#5E5A56"><tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E95420">trap "rm -f /tmp/lock" EXIT</tspan></text>
+      <text x="345" y="218" font-size="8" fill="#AEA79F">Cleanup runs even if the script errors or is killed</text>
       <!-- main note -->
-      <line x1="270" y1="273" x2="330" y2="273" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
-      <rect x="330" y="248" width="320" height="56" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-      <text x="345" y="267" font-size="9" fill="#475569">Check exit codes: <tspan font-family="monospace" fill="#4f46e5">cmd || { echo "failed"; exit 1; }</tspan></text>
-      <text x="345" y="281" font-size="8" fill="#94a3b8">Log progress: <tspan font-family="monospace" fill="#64748b">echo "[$(date)] Starting backup..."</tspan></text>
-      <text x="345" y="295" font-size="8" fill="#94a3b8">Use functions for reusable chunks of logic</text>
+      <line x1="270" y1="273" x2="330" y2="273" stroke="#5E2750" stroke-width="1" stroke-dasharray="3,2"/>
+      <rect x="330" y="248" width="320" height="56" rx="8" fill="#FAFAFA" stroke="#E6E4E2" stroke-width="1"/>
+      <text x="345" y="267" font-size="9" fill="#5E5A56">Check exit codes: <tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#E95420">cmd || { echo "failed"; exit 1; }</tspan></text>
+      <text x="345" y="281" font-size="8" fill="#AEA79F">Log progress: <tspan font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#7A746E">echo "[$(date)] Starting backup..."</tspan></text>
+      <text x="345" y="295" font-size="8" fill="#AEA79F">Use functions for reusable chunks of logic</text>
       <!-- error path arrow from set block -->
       <path d="M40 91 Q20 91 20 273 L40 273" fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrShR)"/>
       <text x="14" y="185" font-size="8" fill="#f43f5e" transform="rotate(-90,14,185)">error → EXIT trap</text>
@@ -2371,8 +2491,8 @@ trap "echo 'Interrupted!'; exit 1" INT  <span class="text-zinc-400"># handle Ctr
 ════════════════════════════════════════════════════════ -->
 <section id="sysadmin">
   <div class="flex items-center gap-3 mb-6">
-    <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-orange-100 text-orange-700 font-extrabold text-sm shrink-0">9</span>
-    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">System Administration &amp; Security</h2>
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-ubuntu-orange text-white shadow-sm font-bold text-sm shrink-0">9</span>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900">System Administration &amp; Security</h2>
   </div>
 
   <div class="prose-content">
@@ -2428,68 +2548,68 @@ rsync -avz --progress /local/dir/ user@server:/remote/dir/</code></pre>
   </div>
 
   <!-- DIAGRAM 10: SSH Key-Based Authentication -->
-  <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-4">
+  <div class="diagram my-8 rounded-2xl overflow-x-auto border border-slate-200 shadow-sm bg-white p-4">
     <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">SSH Key-Based Authentication — How It Works</p>
-    <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto" font-family="Inter,ui-sans-serif,sans-serif" aria-label="SSH key authentication flow">
+    <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-3xl mx-auto min-w-[560px] sm:min-w-0" font-family="Ubuntu Sans,Ubuntu,sans-serif" aria-label="SSH key authentication flow">
       <defs>
-        <marker id="arrSSH" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6366f1"/></marker>
+        <marker id="arrSSH" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#E95420"/></marker>
         <marker id="arrSSHG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
       </defs>
       <!-- ── Two columns: CLIENT left, SERVER right ── -->
       <!-- CLIENT header -->
-      <rect x="10" y="8" width="270" height="36" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
-      <text x="145" y="23" font-size="11" font-weight="700" fill="#3730a3" text-anchor="middle">💻  YOUR MACHINE (Client)</text>
-      <text x="145" y="36" font-size="8.5" fill="#6366f1" text-anchor="middle">~/.ssh/</text>
+      <rect x="10" y="8" width="270" height="36" rx="10" fill="#FBDDD0" stroke="#E95420" stroke-width="2"/>
+      <text x="145" y="23" font-size="11" font-weight="700" fill="#A33A13" text-anchor="middle">💻  YOUR MACHINE (Client)</text>
+      <text x="145" y="36" font-size="8.5" fill="#E95420" text-anchor="middle">~/.ssh/</text>
       <!-- SERVER header -->
       <rect x="420" y="8" width="270" height="36" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
       <text x="555" y="23" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">🖥️  REMOTE SERVER</text>
       <text x="555" y="36" font-size="8.5" fill="#059669" text-anchor="middle">~/.ssh/authorized_keys</text>
       <!-- ── STEP 1: Key generation ── -->
-      <rect x="25" y="62" width="240" height="48" rx="9" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-      <text x="35" y="80" font-size="9" font-family="monospace" fill="#94a3b8">$ ssh-keygen -t ed25519</text>
-      <text x="35" y="96" font-size="8" font-family="monospace" fill="#64748b">Creates key pair in ~/.ssh/</text>
+      <rect x="25" y="62" width="240" height="48" rx="9" fill="#300A24" stroke="#5E2750" stroke-width="1.5"/>
+      <text x="35" y="80" font-size="9" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#AEA79F">$ ssh-keygen -t ed25519</text>
+      <text x="35" y="96" font-size="8" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#7A746E">Creates key pair in ~/.ssh/</text>
       <!-- Private key box -->
-      <rect x="25"  y="124" width="112" height="44" rx="8" fill="#1e293b" stroke="#f43f5e" stroke-width="1.5"/>
+      <rect x="25"  y="124" width="112" height="44" rx="8" fill="#3D1233" stroke="#f43f5e" stroke-width="1.5"/>
       <text x="81" y="142" font-size="10" text-anchor="middle">🔑</text>
       <text x="81" y="157" font-size="9" font-weight="700" fill="#f43f5e" text-anchor="middle">PRIVATE KEY</text>
-      <text x="81" y="168" font-size="7.5" fill="#94a3b8" text-anchor="middle">id_ed25519</text>
+      <text x="81" y="168" font-size="7.5" fill="#AEA79F" text-anchor="middle">id_ed25519</text>
       <!-- Public key box -->
-      <rect x="153" y="124" width="112" height="44" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+      <rect x="153" y="124" width="112" height="44" rx="8" fill="#3D1233" stroke="#34d399" stroke-width="1.5"/>
       <text x="209" y="142" font-size="10" text-anchor="middle">🗝️</text>
       <text x="209" y="157" font-size="9" font-weight="700" fill="#34d399" text-anchor="middle">PUBLIC KEY</text>
-      <text x="209" y="168" font-size="7.5" fill="#94a3b8" text-anchor="middle">id_ed25519.pub</text>
+      <text x="209" y="168" font-size="7.5" fill="#AEA79F" text-anchor="middle">id_ed25519.pub</text>
       <!-- STEP 1 label -->
-      <rect x="25" y="178" width="240" height="18" rx="5" fill="#e0e7ff"/>
-      <text x="145" y="191" font-size="8.5" font-weight="600" fill="#4338ca" text-anchor="middle">① SETUP: Generate key pair (once)</text>
+      <rect x="25" y="178" width="240" height="18" rx="5" fill="#FBDDD0"/>
+      <text x="145" y="191" font-size="8.5" font-weight="600" fill="#C7461A" text-anchor="middle">① SETUP: Generate key pair (once)</text>
       <!-- ── Public key → Server ── -->
       <path d="M265 144 Q340 120 420 144" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrSSHG)"/>
       <text x="340" y="116" font-size="8.5" fill="#059669" text-anchor="middle">ssh-copy-id alice@server</text>
-      <text x="340" y="128" font-size="7.5" fill="#94a3b8" text-anchor="middle">copies public key once</text>
+      <text x="340" y="128" font-size="7.5" fill="#AEA79F" text-anchor="middle">copies public key once</text>
       <!-- SERVER: authorized_keys -->
-      <rect x="435" y="124" width="240" height="44" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
-      <text x="450" y="141" font-size="8.5" font-family="monospace" fill="#34d399">authorized_keys:</text>
-      <text x="450" y="155" font-size="8" font-family="monospace" fill="#64748b">ssh-ed25519 AAAA... alice@co</text>
-      <text x="450" y="166" font-size="8" font-family="monospace" fill="#475569">ssh-ed25519 BBBB... bob@co</text>
+      <rect x="435" y="124" width="240" height="44" rx="8" fill="#300A24" stroke="#10b981" stroke-width="1.5"/>
+      <text x="450" y="141" font-size="8.5" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#34d399">authorized_keys:</text>
+      <text x="450" y="155" font-size="8" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#7A746E">ssh-ed25519 AAAA... alice@co</text>
+      <text x="450" y="166" font-size="8" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#5E5A56">ssh-ed25519 BBBB... bob@co</text>
       <!-- ── STEP 2: Connection ── -->
       <rect x="435" y="178" width="240" height="18" rx="5" fill="#d1fae5"/>
       <text x="555" y="191" font-size="8.5" font-weight="600" fill="#065f46" text-anchor="middle">② Stored on server once</text>
       <!-- ── STEP 3: SSH Connect ── -->
-      <path d="M145 200 Q145 218 145 226" fill="none" stroke="#6366f1" stroke-width="1.8" marker-end="url(#arrSSH)"/>
-      <rect x="25" y="226" width="240" height="44" rx="9" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
-      <text x="35" y="244" font-size="9" font-family="monospace" fill="#94a3b8">$ ssh alice@prod-server</text>
-      <text x="35" y="258" font-size="8" font-family="monospace" fill="#64748b">signs challenge with private key</text>
-      <text x="35" y="271" font-size="7.5" fill="#475569">private key never leaves your machine</text>
+      <path d="M145 200 Q145 218 145 226" fill="none" stroke="#E95420" stroke-width="1.8" marker-end="url(#arrSSH)"/>
+      <rect x="25" y="226" width="240" height="44" rx="9" fill="#300A24" stroke="#E95420" stroke-width="1.5"/>
+      <text x="35" y="244" font-size="9" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#AEA79F">$ ssh alice@prod-server</text>
+      <text x="35" y="258" font-size="8" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#7A746E">signs challenge with private key</text>
+      <text x="35" y="271" font-size="7.5" fill="#5E5A56">private key never leaves your machine</text>
       <!-- ── connect arrow ── -->
-      <path d="M265 248 L419 248" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrSSH)"/>
-      <text x="340" y="242" font-size="8" fill="#6366f1" text-anchor="middle">SSH challenge / response</text>
-      <text x="340" y="258" font-size="7.5" fill="#94a3b8" text-anchor="middle">encrypted tunnel (port 22)</text>
+      <path d="M265 248 L419 248" fill="none" stroke="#E95420" stroke-width="2" marker-end="url(#arrSSH)"/>
+      <text x="340" y="242" font-size="8" fill="#E95420" text-anchor="middle">SSH challenge / response</text>
+      <text x="340" y="258" font-size="7.5" fill="#AEA79F" text-anchor="middle">encrypted tunnel (port 22)</text>
       <!-- ── SERVER verify ── -->
-      <rect x="419" y="226" width="256" height="44" rx="9" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
-      <text x="436" y="244" font-size="9" font-family="monospace" fill="#34d399">✓ Signature matches!</text>
-      <text x="436" y="258" font-size="8" fill="#94a3b8">public key in authorized_keys</text>
-      <text x="436" y="272" font-size="7.5" fill="#64748b">no password ever sent over network</text>
+      <rect x="419" y="226" width="256" height="44" rx="9" fill="#3D1233" stroke="#10b981" stroke-width="1.5"/>
+      <text x="436" y="244" font-size="9" font-family="Ubuntu Sans Mono,Ubuntu Mono,monospace" fill="#34d399">✓ Signature matches!</text>
+      <text x="436" y="258" font-size="8" fill="#AEA79F">public key in authorized_keys</text>
+      <text x="436" y="272" font-size="7.5" fill="#7A746E">no password ever sent over network</text>
       <!-- ── Bottom caption ── -->
-      <text x="350" y="286" font-size="8.5" fill="#94a3b8" text-anchor="middle">Protect your private key with a passphrase · chmod 600 ~/.ssh/id_ed25519 · Never share it</text>
+      <text x="350" y="286" font-size="8.5" fill="#AEA79F" text-anchor="middle">Protect your private key with a passphrase · chmod 600 ~/.ssh/id_ed25519 · Never share it</text>
     </svg>
   </div>
 
@@ -2639,28 +2759,25 @@ rsync -avz --progress /local/dir/ user@server:/remote/dir/</code></pre>
       </div><!-- end .space-y-16 -->
 
       <!-- FOOTER -->
-      <footer class="border-t border-slate-200 bg-white px-6 md:px-10 py-10 mt-10">
+      <footer class="border-t border-black/10 bg-ubuntu-sidebar px-6 md:px-10 py-8 mt-10">
         <div class="max-w-4xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div class="flex items-center gap-2 mb-1">
-              <div class="w-6 h-6 bg-indigo-600 rounded flex items-center justify-center">
-                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3"/></svg>
-              </div>
+              <span class="w-6 h-6 rounded-md bg-gradient-to-b from-[#5E2750] to-[#300A24] flex items-center justify-center text-white">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3"/></svg>
+              </span>
               <span class="font-bold text-slate-900 text-sm">Linux for SRE</span>
             </div>
             <p class="text-xs text-slate-500">10 modules · 100 MCQs · Built for beginners</p>
           </div>
-          <p class="text-xs text-slate-400">© <span id="current-year"></span> Linux for SRE Tutorial. Open-source educational content.</p>
+          <p class="text-xs text-slate-500 font-mono">© <span id="current-year"></span> Linux for SRE Tutorial. Open-source educational content.</p>
         </div>
       </footer>
 
     </main>
-  </div><!-- end desktop layout -->
+  </div><!-- end .lg:flex -->
+  </div><!-- end desktop -->
 
-  <!-- Back to top -->
-  <button id="back-to-top" class="fixed bottom-6 right-6 z-40 w-10 h-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 opacity-0 pointer-events-none" aria-label="Back to top">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
-  </button>
 
   <script src="script.js"></script>
 </body>
